@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import '../models/quiz_question.dart';
-import '../models/mental_health_category.dart';
-import 'tasks_screen.dart';
+
+import '../data/mental_health_category.dart';
+import '../data/quiz_question.dart';
 import '../main.dart';
 
 class QuizResultsScreen extends StatefulWidget {
@@ -81,8 +81,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> with TickerProvid
       if (_selectedCategories.contains(categoryName)) {
         _selectedCategories.remove(categoryName);
         // Remove tasks from this category when unselected
-        _selectedTasks.removeWhere((taskId) => 
-          _recommendedTasks.firstWhere((task) => task.id == taskId).category == categoryName);
+        _selectedTasks.removeWhere((taskId) => _recommendedTasks.firstWhere((task) => task.id == taskId).category == categoryName);
       } else {
         _selectedCategories.add(categoryName);
       }
@@ -103,10 +102,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> with TickerProvid
     final selectedTasks = <MentalHealthTask>[];
     for (final category in mentalHealthCategories) {
       if (_selectedCategories.contains(category.name)) {
-        final tasks = category.tasks
-            .where((task) => task.state == _currentState.name)
-            .take(3)
-            .toList();
+        final tasks = category.tasks.where((task) => task.state == _currentState.name).take(3).toList();
         selectedTasks.addAll(tasks);
       }
     }
@@ -251,23 +247,17 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> with TickerProvid
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                               decoration: BoxDecoration(
-                                color: isSelected
-                                    ? stateColor.withOpacity(0.1)
-                                    : CupertinoColors.systemBackground,
+                                color: isSelected ? stateColor.withOpacity(0.1) : CupertinoColors.systemBackground,
                                 borderRadius: BorderRadius.circular(20),
                                 border: Border.all(
-                                  color: isSelected
-                                      ? stateColor
-                                      : CupertinoColors.systemGrey4,
+                                  color: isSelected ? stateColor : CupertinoColors.systemGrey4,
                                   width: 1,
                                 ),
                               ),
                               child: Text(
                                 category.name,
                                 style: TextStyle(
-                                  color: isSelected
-                                      ? stateColor
-                                      : CupertinoColors.label,
+                                  color: isSelected ? stateColor : CupertinoColors.label,
                                   fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
                                   fontSize: 13,
                                 ),
@@ -313,9 +303,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> with TickerProvid
                               color: CupertinoColors.systemBackground,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: isSelected
-                                    ? stateColor
-                                    : CupertinoColors.systemGrey4,
+                                color: isSelected ? stateColor : CupertinoColors.systemGrey4,
                                 width: 1,
                               ),
                               boxShadow: [
@@ -404,9 +392,7 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> with TickerProvid
                       borderRadius: BorderRadius.circular(30),
                       onPressed: () {
                         if (_selectedTasks.length == 3) {
-                          final selectedTasksList = _getSelectedTasks()
-                              .where((task) => _selectedTasks.contains(task.id))
-                              .toList();
+                          final selectedTasksList = _getSelectedTasks().where((task) => _selectedTasks.contains(task.id)).toList();
                           Navigator.of(context).pushAndRemoveUntil(
                             CupertinoPageRoute(
                               builder: (context) => MainNavigator(
@@ -437,4 +423,4 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> with TickerProvid
       ),
     );
   }
-} 
+}

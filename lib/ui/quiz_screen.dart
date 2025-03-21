@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import '../models/quiz_question.dart';
+
+import '../data/quiz_question.dart';
 import 'quiz_results_screen.dart';
 
 class QuizScreen extends StatefulWidget {
@@ -274,4 +275,4 @@ class _QuizScreenState extends State<QuizScreen> with TickerProviderStateMixin {
       ),
     );
   }
-} 
+}
