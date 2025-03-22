@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
-import '../models/mental_health_category.dart';
-import '../models/mood_entry.dart';
+
+import '../data/legacy_models/mental_health_category.dart';
+import '../data/legacy_models/mood_entry.dart';
 import '../services/app_data_service.dart';
+import '../ui/edit_note_screen.dart';
 import '../widgets/activity_details_sheet.dart';
 import '../widgets/activity_note_panel.dart';
-import '../screens/edit_note_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final MentalHealthState? mentalHealthState;
@@ -133,34 +134,125 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<String> _getEmotionsForMood(double mood) {
-    if (mood <= 1) return [
-      'Sad', 'Angry', 'Frustrated', 'Overwhelmed', 'Hopeless', 'Exhausted',
-      'Devastated', 'Despairing', 'Miserable', 'Lonely', 'Terrified', 'Panicked',
-      'Worthless', 'Guilty', 'Ashamed', 'Humiliated', 'Powerless', 'Trapped'
-    ];
-    if (mood <= 2) return [
-      'Anxious', 'Tired', 'Stressed', 'Disappointed', 'Worried', 'Irritable',
-      'Nervous', 'Restless', 'Uneasy', 'Tense', 'Overwhelmed', 'Confused',
-      'Discouraged', 'Frustrated', 'Annoyed', 'Impatient', 'Insecure', 'Vulnerable',
-      'Exhausted', 'Drained', 'Fatigued', 'Weary'
-    ];
-    if (mood <= 3) return [
-      'Calm', 'Neutral', 'Content', 'Balanced', 'Peaceful', 'Relaxed',
-      'Stable', 'Centered', 'Present', 'Mindful', 'Accepting', 'Patient',
-      'Satisfied', 'Comfortable', 'Secure', 'Grounded', 'Focused', 'Clear',
-      'Tranquil', 'Serene', 'At ease', 'Steady'
-    ];
-    if (mood <= 4) return [
-      'Happy', 'Energetic', 'Motivated', 'Grateful', 'Optimistic', 'Focused',
-      'Joyful', 'Excited', 'Enthusiastic', 'Inspired', 'Confident', 'Proud',
-      'Appreciative', 'Blessed', 'Fulfilled', 'Accomplished', 'Determined', 'Driven',
-      'Vibrant', 'Alive', 'Thriving', 'Flourishing'
-    ];
+    if (mood <= 1)
+      return [
+        'Sad',
+        'Angry',
+        'Frustrated',
+        'Overwhelmed',
+        'Hopeless',
+        'Exhausted',
+        'Devastated',
+        'Despairing',
+        'Miserable',
+        'Lonely',
+        'Terrified',
+        'Panicked',
+        'Worthless',
+        'Guilty',
+        'Ashamed',
+        'Humiliated',
+        'Powerless',
+        'Trapped'
+      ];
+    if (mood <= 2)
+      return [
+        'Anxious',
+        'Tired',
+        'Stressed',
+        'Disappointed',
+        'Worried',
+        'Irritable',
+        'Nervous',
+        'Restless',
+        'Uneasy',
+        'Tense',
+        'Overwhelmed',
+        'Confused',
+        'Discouraged',
+        'Frustrated',
+        'Annoyed',
+        'Impatient',
+        'Insecure',
+        'Vulnerable',
+        'Exhausted',
+        'Drained',
+        'Fatigued',
+        'Weary'
+      ];
+    if (mood <= 3)
+      return [
+        'Calm',
+        'Neutral',
+        'Content',
+        'Balanced',
+        'Peaceful',
+        'Relaxed',
+        'Stable',
+        'Centered',
+        'Present',
+        'Mindful',
+        'Accepting',
+        'Patient',
+        'Satisfied',
+        'Comfortable',
+        'Secure',
+        'Grounded',
+        'Focused',
+        'Clear',
+        'Tranquil',
+        'Serene',
+        'At ease',
+        'Steady'
+      ];
+    if (mood <= 4)
+      return [
+        'Happy',
+        'Energetic',
+        'Motivated',
+        'Grateful',
+        'Optimistic',
+        'Focused',
+        'Joyful',
+        'Excited',
+        'Enthusiastic',
+        'Inspired',
+        'Confident',
+        'Proud',
+        'Appreciative',
+        'Blessed',
+        'Fulfilled',
+        'Accomplished',
+        'Determined',
+        'Driven',
+        'Vibrant',
+        'Alive',
+        'Thriving',
+        'Flourishing'
+      ];
     return [
-      'Excited', 'Joyful', 'Confident', 'Inspired', 'Enthusiastic', 'Empowered',
-      'Elated', 'Ecstatic', 'Radiant', 'Blissful', 'Euphoric', 'Wonderful',
-      'Magnificent', 'Amazing', 'Incredible', 'Fantastic', 'Brilliant', 'Spectacular',
-      'Triumphant', 'Victorious', 'Unstoppable', 'Invincible'
+      'Excited',
+      'Joyful',
+      'Confident',
+      'Inspired',
+      'Enthusiastic',
+      'Empowered',
+      'Elated',
+      'Ecstatic',
+      'Radiant',
+      'Blissful',
+      'Euphoric',
+      'Wonderful',
+      'Magnificent',
+      'Amazing',
+      'Incredible',
+      'Fantastic',
+      'Brilliant',
+      'Spectacular',
+      'Triumphant',
+      'Victorious',
+      'Unstoppable',
+      'Invincible'
     ];
   }
 
@@ -203,7 +295,8 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _showActivityDetails(BuildContext context, {
+  void _showActivityDetails(
+    BuildContext context, {
     required String title,
     required String note,
     required String duration,
@@ -230,7 +323,7 @@ class _HomeScreenState extends State<HomeScreen> {
               color: color,
               timestamp: DateTime.now(),
             );
-            
+
             await AppDataService.instance.saveActivityNote(activityNote);
             setState(() {
               _activityNotes.insert(0, activityNote);
@@ -255,9 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onSave: (updatedNote) async {
             await AppDataService.instance.saveActivityNote(updatedNote);
             setState(() {
-              final index = _activityNotes.indexWhere(
-                (n) => n.timestamp == note.timestamp
-              );
+              final index = _activityNotes.indexWhere((n) => n.timestamp == note.timestamp);
               if (index != -1) {
                 _activityNotes[index] = updatedNote;
               }
@@ -265,9 +356,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           onDelete: (deletedNote) {
             setState(() {
-              _activityNotes.removeWhere(
-                (n) => n.timestamp == deletedNote.timestamp
-              );
+              _activityNotes.removeWhere((n) => n.timestamp == deletedNote.timestamp);
             });
           },
         ),
@@ -391,17 +480,19 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: CupertinoTheme.of(context).primaryColor,
                             ),
                           ),
-                          suffix: _dailyNote.isNotEmpty ? CupertinoButton(
-                            padding: EdgeInsets.zero,
-                            child: const Icon(CupertinoIcons.clear),
-                            onPressed: () async {
-                              setState(() {
-                                _dailyNote = '';
-                                _noteController.clear();
-                              });
-                              await AppDataService.instance.saveDailyNote('');
-                            },
-                          ) : null,
+                          suffix: _dailyNote.isNotEmpty
+                              ? CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  child: const Icon(CupertinoIcons.clear),
+                                  onPressed: () async {
+                                    setState(() {
+                                      _dailyNote = '';
+                                      _noteController.clear();
+                                    });
+                                    await AppDataService.instance.saveDailyNote('');
+                                  },
+                                )
+                              : null,
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       ),
@@ -468,70 +559,69 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                             ),
                             const SizedBox(height: 8),
-                            if (_hasInteractedWithSlider) Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  _getMoodText(_currentMood),
-                                  style: TextStyle(
-                                    fontSize: 17,
-                                    color: _getMoodColor(_currentMood),
-                                    fontWeight: FontWeight.w600,
+                            if (_hasInteractedWithSlider)
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    _getMoodText(_currentMood),
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: _getMoodColor(_currentMood),
+                                      fontWeight: FontWeight.w600,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
                             const SizedBox(height: 16),
-                            if (_hasInteractedWithSlider) Wrap(
-                              alignment: WrapAlignment.center,
-                              spacing: 6,
-                              runSpacing: 6,
-                              children: _emotions.map((emotion) {
-                                final isSelected = _selectedEmotions.contains(emotion);
-                                return GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      if (isSelected) {
-                                        _selectedEmotions.remove(emotion);
-                                      } else {
-                                        _selectedEmotions.add(emotion);
-                                      }
-                                    });
-                                    _saveMoodEntry();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: isSelected 
-                                        ? _getMoodColor(_currentMood)
-                                        : _getMoodColor(_currentMood).withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: _getMoodColor(_currentMood),
-                                        width: isSelected ? 0 : 1,
+                            if (_hasInteractedWithSlider)
+                              Wrap(
+                                alignment: WrapAlignment.center,
+                                spacing: 6,
+                                runSpacing: 6,
+                                children: _emotions.map((emotion) {
+                                  final isSelected = _selectedEmotions.contains(emotion);
+                                  return GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        if (isSelected) {
+                                          _selectedEmotions.remove(emotion);
+                                        } else {
+                                          _selectedEmotions.add(emotion);
+                                        }
+                                      });
+                                      _saveMoodEntry();
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: isSelected ? _getMoodColor(_currentMood) : _getMoodColor(_currentMood).withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: _getMoodColor(_currentMood),
+                                          width: isSelected ? 0 : 1,
+                                        ),
+                                      ),
+                                      child: Text(
+                                        emotion,
+                                        style: TextStyle(
+                                          color: isSelected ? CupertinoColors.white : _getMoodColor(_currentMood),
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
                                     ),
-                                    child: Text(
-                                      emotion,
-                                      style: TextStyle(
-                                        color: isSelected 
-                                          ? CupertinoColors.white
-                                          : _getMoodColor(_currentMood),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                            if (_isSaving) const Padding(
-                              padding: EdgeInsets.only(top: 8.0),
-                              child: CupertinoActivityIndicator(),
-                            ),
+                                  );
+                                }).toList(),
+                              ),
+                            if (_isSaving)
+                              const Padding(
+                                padding: EdgeInsets.only(top: 8.0),
+                                child: CupertinoActivityIndicator(),
+                              ),
                           ],
                         ),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -834,4 +924,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-} 
+}

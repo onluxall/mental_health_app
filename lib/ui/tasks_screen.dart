@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import '../models/mental_health_category.dart';
+
+import '../data/legacy_models/mental_health_category.dart';
 
 class TasksScreen extends StatefulWidget {
   final List<MentalHealthTask> tasks;
@@ -185,9 +186,7 @@ class _TasksScreenState extends State<TasksScreen> {
                           color: CupertinoColors.systemBackground,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                            color: isCompleted
-                                ? CupertinoColors.activeGreen
-                                : CupertinoColors.systemGrey4,
+                            color: isCompleted ? CupertinoColors.activeGreen : CupertinoColors.systemGrey4,
                             width: 1,
                           ),
                           boxShadow: [
@@ -223,12 +222,8 @@ class _TasksScreenState extends State<TasksScreen> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: isCompleted
-                                          ? CupertinoColors.systemGrey
-                                          : CupertinoColors.label,
-                                      decoration: isCompleted
-                                          ? TextDecoration.lineThrough
-                                          : null,
+                                      color: isCompleted ? CupertinoColors.systemGrey : CupertinoColors.label,
+                                      decoration: isCompleted ? TextDecoration.lineThrough : null,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -237,9 +232,7 @@ class _TasksScreenState extends State<TasksScreen> {
                                     style: TextStyle(
                                       fontSize: 14,
                                       height: 1.4,
-                                      color: isCompleted
-                                          ? CupertinoColors.systemGrey2
-                                          : CupertinoColors.secondaryLabel,
+                                      color: isCompleted ? CupertinoColors.systemGrey2 : CupertinoColors.secondaryLabel,
                                     ),
                                   ),
                                   const SizedBox(height: 8),
@@ -280,4 +273,4 @@ class _TasksScreenState extends State<TasksScreen> {
       ),
     );
   }
-} 
+}

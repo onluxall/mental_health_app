@@ -1,18 +1,27 @@
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'screens/home_screen.dart';
-import 'screens/journal_screen.dart';
-import 'screens/therapist_screen.dart';
-import 'screens/tasks_screen.dart';
-import 'screens/quiz_screen.dart';
-import 'models/mental_health_category.dart';
-import 'models/quiz_question.dart';
+import 'package:flutter/material.dart';
+import 'package:mental_health_app/ui/auth/auth_switch.dart';
+
+import 'data/legacy_models/mental_health_category.dart';
+import 'data/legacy_models/quiz_question.dart';
+import 'firebase_options.dart';
+import 'get_it_conf.dart';
 import 'services/app_data_service.dart';
+import 'ui/home_screen.dart';
+import 'ui/journal_screen.dart';
+import 'ui/quiz_screen.dart';
+import 'ui/tasks_screen.dart';
+import 'ui/therapist_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseAuth.instance.signOut();
+  await configureDependencies();
   runApp(const MentalHealthApp());
 }
 
@@ -21,20 +30,15 @@ class MentalHealthApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+    return MaterialApp(
       title: 'Mental Health App',
       debugShowCheckedModeBanner: false,
-      theme: const CupertinoThemeData(
-        primaryColor: CupertinoColors.activeGreen,
-        brightness: Brightness.light,
-        scaffoldBackgroundColor: CupertinoColors.systemBackground,
-      ),
-      home: const MainNavigator(),
+      home: const AuthSwitch(),
       routes: {
         '/tasks': (context) => TasksScreen(
-          tasks: [],
-          mentalHealthState: mentalHealthStates[2], // Stable State
-        ),
+              tasks: [],
+              mentalHealthState: mentalHealthStates[2],
+            ),
       },
     );
   }
@@ -82,7 +86,7 @@ class _MainNavigatorState extends State<MainNavigator> {
 
   Future<void> _checkAndLoadData() async {
     final hasCompletedQuiz = await AppDataService.instance.hasCompletedQuiz();
-    
+
     if (hasCompletedQuiz) {
       final currentState = await AppDataService.instance.getCurrentState();
       final selectedTasks = await AppDataService.instance.getSelectedTasks();
@@ -115,14 +119,14 @@ class _MainNavigatorState extends State<MainNavigator> {
       final state = result['state'] as MentalHealthState;
       final tasks = result['tasks'] as List<MentalHealthTask>;
       final questions = result['questions'] as List<QuizQuestion>;
-      
+
       setState(() {
         _currentState = state;
         _selectedTasks = tasks;
         _quizQuestions = questions;
         _hasCompletedQuiz = true;
       });
-      
+
       await _saveAppData();
     }
   }
