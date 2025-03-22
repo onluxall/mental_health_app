@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../data/mental_health_category.dart';
+import '../data/legacy_models/mental_health_category.dart';
 
 class TasksScreen extends StatefulWidget {
   final List<MentalHealthTask> tasks;

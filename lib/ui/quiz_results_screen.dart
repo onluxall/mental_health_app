@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../data/mental_health_category.dart';
-import '../data/quiz_question.dart';
+import '../data/legacy_models/mental_health_category.dart';
+import '../data/legacy_models/quiz_question.dart';
 import '../main.dart';
 
 class QuizResultsScreen extends StatefulWidget {

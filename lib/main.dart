@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/ui/auth/auth_switch.dart';
 
-import 'data/mental_health_category.dart';
-import 'data/quiz_question.dart';
+import 'data/legacy_models/mental_health_category.dart';
+import 'data/legacy_models/quiz_question.dart';
 import 'firebase_options.dart';
+import 'get_it_conf.dart';
 import 'services/app_data_service.dart';
 import 'ui/home_screen.dart';
 import 'ui/journal_screen.dart';
@@ -18,6 +20,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseAuth.instance.signOut();
+  await configureDependencies();
   runApp(const MentalHealthApp());
 }
 

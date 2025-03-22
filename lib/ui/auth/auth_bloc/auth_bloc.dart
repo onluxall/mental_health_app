@@ -1,14 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:mental_health_app/ui/base/base_event.dart';
+import 'package:mental_health_app/use_case/auth_init/auth_init_use_case.dart';
 import 'package:mental_health_app/use_case/log_in/log_in_use_case.dart';
 import 'package:mental_health_app/use_case/sign_up/sign_up_use_case.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
+@Injectable()
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  AuthBloc() : super(const AuthState()) {
+  AuthBloc(this._signUpUC, this._logInUC, this._authInitUC) : super(const AuthState()) {
     on<AuthEventInit>(_onAuthEventInit);
     on<AuthEventChangeScreen>(_onAuthEventChangeScreen);
     on<AuthEventChangeName>(_onAuthEventChangeName);
@@ -18,19 +21,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogIn>(_onAuthEventLogIn);
   }
 
-  SignUpUseCase signUpUseCase = SignUpUseCase();
-  LogInUseCase logInUseCase = LogInUseCase();
+  final ISignUpUseCase _signUpUC;
+  final ILogInUseCase _logInUC;
+  final IAuthInitUseCase _authInitUC;
 
   int? chosenScreen;
   String? name;
   String? email;
   String? password;
   bool isLoading = false;
+  bool isLoggedIn = false;
   dynamic error;
 
   void _onAuthEventInit(AuthEventInit event, Emitter<AuthState> emit) async {
     chosenScreen = 0;
-    emit(getCurrentState());
+    await for (final result in _authInitUC.invoke()) {
+      if (result.isSuccessful()) {
+        isLoggedIn = result.isLoggedIn ?? false;
+        return emit(getCurrentState());
+      } else if (result.error != null) {
+        return emit(getCurrentState());
+      }
+    }
   }
 
   void _onAuthEventChangeScreen(AuthEventChangeScreen event, Emitter<AuthState> emit) async {
@@ -54,8 +66,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future _onAuthEventSignUp(AuthEventSignUp event, Emitter<AuthState> emit) async {
-    await for (final result in signUpUseCase.invoke(email: email ?? "", password: password ?? "")) {
+    await for (final result in _signUpUC.invoke(email: email ?? "", password: password ?? "")) {
       if (result.isSuccessful()) {
+        chosenScreen = 1;
         return emit(getCurrentState());
       } else if (result.error != null) {
         return emit(getCurrentState());
@@ -67,8 +80,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (email == null || password == null) {
       return;
     }
-    await for (final result in logInUseCase.invoke(email: email ?? "", password: password ?? "")) {
+    await for (final result in _logInUC.invoke(email: email ?? "", password: password ?? "")) {
       if (result.isSuccessful()) {
+        isLoggedIn = true;
         return emit(getCurrentState());
       } else if (result.error != null) {
         return emit(getCurrentState());
@@ -79,6 +93,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthState getCurrentState() {
     return AuthState(
       chosenScreen: chosenScreen ?? 0,
+      isLoggedIn: isLoggedIn,
       name: name,
       email: email,
       password: password,

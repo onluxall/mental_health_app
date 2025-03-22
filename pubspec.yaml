@@ -43,10 +43,17 @@ dependencies:
   equatable: ^2.0.7
   bloc: ^9.0.0
   firebase_auth: ^5.5.1
+  injectable: ^2.5.0
+  get_it: ^8.0.3
+  json_annotation: ^4.9.0
+  cloud_firestore: ^5.6.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.4.15
+  injectable_generator: ^2.7.0
+  json_serializable: ^6.9.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

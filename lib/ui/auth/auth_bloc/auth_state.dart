@@ -7,6 +7,7 @@ class AuthState extends Equatable {
     this.email,
     this.password,
     this.isLoading = false,
+    this.isLoggedIn = false,
     this.error,
   });
 
@@ -14,6 +15,7 @@ class AuthState extends Equatable {
   final String? name;
   final String? email;
   final String? password;
+  final bool isLoggedIn;
   final bool isLoading;
   final dynamic error;
 
@@ -23,6 +25,7 @@ class AuthState extends Equatable {
         name,
         email,
         password,
+        isLoggedIn,
         isLoading,
         error,
       ];

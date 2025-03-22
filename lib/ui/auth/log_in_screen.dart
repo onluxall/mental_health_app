@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'auth_bloc/auth_bloc.dart';
 
 class LogInScreen extends StatelessWidget {
   const LogInScreen({super.key});
@@ -32,7 +35,7 @@ class LogInScreen extends StatelessWidget {
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: () {
-                  // TODO: Implement login logic
+                  context.read<AuthBloc>().add(AuthEventLogIn());
                 },
                 child: const Text('Log In'),
               ),

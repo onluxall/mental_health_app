@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../data/journal_entry.dart';
-import '../data/mental_health_category.dart';
-import '../data/mood_entry.dart';
-import '../data/quiz_question.dart';
+import '../data/legacy_models/journal_entry.dart';
+import '../data/legacy_models/mental_health_category.dart';
+import '../data/legacy_models/mood_entry.dart';
+import '../data/legacy_models/quiz_question.dart';
 import '../widgets/activity_note_panel.dart';
 
 class AppDataService {

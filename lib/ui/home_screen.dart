@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
-import '../data/mental_health_category.dart';
-import '../data/mood_entry.dart';
+import '../data/legacy_models/mental_health_category.dart';
+import '../data/legacy_models/mood_entry.dart';
 import '../services/app_data_service.dart';
 import '../ui/edit_note_screen.dart';
 import '../widgets/activity_details_sheet.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import '../data/quiz_question.dart';
+import '../data/legacy_models/quiz_question.dart';
 import 'quiz_results_screen.dart';
 
 class QuizScreen extends StatefulWidget {
