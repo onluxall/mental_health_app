@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class JournalEntry {
   final String id;
   final String title;
@@ -38,4 +36,4 @@ class JournalEntry {
       mood: json['mood'] as double? ?? 3.0,
     );
   }
-} 
+}
