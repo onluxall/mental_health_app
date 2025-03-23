@@ -48,7 +48,7 @@ class SignUpScreen extends StatelessWidget {
               onPressed: () {
                 context.read<AuthBloc>().add(AuthEventChangeScreen(screenIndex: 1));
               },
-              child: const Text("I don't have an account"),
+              child: const Text("I have an account"),
             ),
           ],
         ),

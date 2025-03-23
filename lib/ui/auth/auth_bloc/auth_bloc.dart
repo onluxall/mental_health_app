@@ -66,7 +66,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future _onAuthEventSignUp(AuthEventSignUp event, Emitter<AuthState> emit) async {
-    await for (final result in _signUpUC.invoke(email: email ?? "", password: password ?? "")) {
+    await for (final result in _signUpUC.invoke(email: email ?? "", password: password ?? "", name: name ?? "")) {
       if (result.isSuccessful()) {
         chosenScreen = 1;
         return emit(getCurrentState());
@@ -77,6 +77,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future _onAuthEventLogIn(AuthEventLogIn event, Emitter<AuthState> emit) async {
+    print(email);
+    print(password);
     if (email == null || password == null) {
       return;
     }
