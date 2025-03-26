@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 
 class TherapistScreen extends StatelessWidget {
   const TherapistScreen({super.key});
@@ -11,12 +10,10 @@ class TherapistScreen extends StatelessWidget {
         middle: Text('Therapist'),
       ),
       child: Center(
-        child:
-               Text(
-                 'Loading...',
-              ),
+        child: Text(
+          'Loading...',
+        ),
       ),
     );
   }
 }
-

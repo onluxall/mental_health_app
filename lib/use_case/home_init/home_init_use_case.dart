@@ -1,7 +1,6 @@
-import 'dart:convert';
+import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as http;
 import 'package:injectable/injectable.dart';
 import 'package:mental_health_app/data/user/interface.dart';
 
@@ -21,16 +20,11 @@ class HomeInitUseCase extends IHomeInitUseCase {
   Stream<HomeInitResponse> invoke() async* {
     try {
       yield HomeInitResponse(isLoading: true);
-      final response = await http.get(Uri.parse('https://api.api-ninjas.com/v1/quotes'), headers: {
-        'X-Api-Key': 'sUQyxNS8th/iZFSyQDxjtw==vBaUIiB7yjC9m79B',
-      });
       Quote? quote;
-      if (response.statusCode == 200) {
-        List<dynamic> jsonList = json.decode(response.body);
-        quote = (jsonList.map((data) => Quote.fromJson(data)).toList()).firstOrNull;
-      } else {
-        throw Exception('Failed to load quotes');
-      }
+      final random = Random();
+      String randomQuote = mentalHealthQuotes.keys.elementAt(random.nextInt(mentalHealthQuotes.length));
+      String author = mentalHealthQuotes[randomQuote]!;
+      quote = Quote(text: randomQuote, author: author);
       final id = _auth.currentUser?.uid;
       final user = await _userRepo.getUser(id: id ?? '');
       yield HomeInitResponse(quote: quote, user: user);
@@ -40,3 +34,16 @@ class HomeInitUseCase extends IHomeInitUseCase {
     }
   }
 }
+
+Map<String, String> mentalHealthQuotes = {
+  "Nothing can dim the light that shines from within.": "Maya Angelou",
+  "Your present circumstances don’t determine where you go; they merely determine where you start.": "Nido Qubein",
+  "You, yourself, as much as anybody in the entire universe, deserve your love and affection.": "Buddha",
+  "Do not let your difficulties fill you with anxiety; after all, it is only in the darkest nights that stars shine more brightly.": "Ali Ibn Abi Talib",
+  "There is hope, even when your brain tells you there isn’t.": "John Green",
+  "Happiness can be found even in the darkest of times, if one only remembers to turn on the light.": "Albus Dumbledore (J.K. Rowling)",
+  "You don’t have to control your thoughts. You just have to stop letting them control you.": "Dan Millman",
+  "Healing takes time, and asking for help is a courageous step.": "Mariska Hargitay",
+  "Self-care is not a luxury, it’s a necessity.": "Audre Lorde",
+  "Mental health needs a great deal of attention. It’s the final taboo and it needs to be faced and dealt with.": "Adam Ant"
+};

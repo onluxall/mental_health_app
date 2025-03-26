@@ -31,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _hasInteractedWithSlider = false;
   final List<String> _emotions = [];
   final Set<String> _selectedEmotions = {};
-  DateTime? _lastMoodUpdate;
   bool _isSaving = false;
-  bool _isNoteExpanded = false;
   final TextEditingController _noteController = TextEditingController();
   List<ActivityNote> _activityNotes = [];
   final List<Map<String, dynamic>> _recommendedActivities = [
@@ -67,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadDailyData() async {
-    // Load daily note
     final savedNote = await AppDataService.instance.getDailyNote();
     if (savedNote != null) {
       setState(() {
@@ -76,7 +73,6 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    // Load daily mood
     final savedMood = await AppDataService.instance.getDailyMood();
     if (savedMood != null) {
       setState(() {
@@ -119,14 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
     if (value <= 3) return 'Okay';
     if (value <= 4) return 'Good';
     return 'Great';
-  }
-
-  IconData _getMoodIcon(double value) {
-    if (value <= 1) return CupertinoIcons.minus_circle_fill;
-    if (value <= 2) return CupertinoIcons.minus_circle;
-    if (value <= 3) return CupertinoIcons.circle;
-    if (value <= 4) return CupertinoIcons.plus_circle;
-    return CupertinoIcons.plus_circle_fill;
   }
 
   Color _getMoodColor(double value) {
@@ -289,7 +277,6 @@ class _HomeScreenState extends State<HomeScreen> {
         emotions: _selectedEmotions.toList(),
         note: _dailyNote.isNotEmpty ? _dailyNote : null,
       );
-      _lastMoodUpdate = DateTime.now();
     } catch (e) {
       print('Error saving mood entry: $e');
     } finally {
@@ -316,7 +303,6 @@ class _HomeScreenState extends State<HomeScreen> {
         icon: icon,
         color: color,
         onSave: (note, duration) async {
-          // Only save to recent activities if it's not a task
           final isTask = widget.selectedTasks?.any((task) => task.title == title) ?? false;
           if (!isTask) {
             final activityNote = ActivityNote(
@@ -333,7 +319,6 @@ class _HomeScreenState extends State<HomeScreen> {
               _activityNotes.insert(0, activityNote);
             });
           } else {
-            // If it's a task, mark it as completed
             final task = widget.selectedTasks!.firstWhere((t) => t.title == title);
             await AppDataService.instance.saveCompletedTask(task.id);
             await _saveTasks();
@@ -416,13 +401,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 4),
-                                // Text(
-                                //   'How are you feeling today?',
-                                //   style: TextStyle(
-                                //     fontSize: 17,
-                                //     color: CupertinoColors.systemGrey.resolveFrom(context),
-                                //   ),
-                                // ),
                                 Visibility(
                                     visible: state.quote?.text != null && state.quote?.author != null,
                                     child: Column(
