@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 
 import '../data/legacy_models/mental_health_category.dart';
 import '../data/legacy_models/quiz_question.dart';
-import '../main.dart';
 
 class QuizResultsScreen extends StatefulWidget {
   final List<QuizQuestion> questions;
@@ -393,16 +392,16 @@ class _QuizResultsScreenState extends State<QuizResultsScreen> with TickerProvid
                       onPressed: () {
                         if (_selectedTasks.length == 3) {
                           final selectedTasksList = _getSelectedTasks().where((task) => _selectedTasks.contains(task.id)).toList();
-                          Navigator.of(context).pushAndRemoveUntil(
-                            CupertinoPageRoute(
-                              builder: (context) => MainNavigator(
-                                initialState: _currentState,
-                                initialTasks: selectedTasksList,
-                                initialQuestions: widget.questions,
-                              ),
-                            ),
-                            (route) => false,
-                          );
+                          // Navigator.of(context).pushAndRemoveUntil(
+                          //   CupertinoPageRoute(
+                          //     builder: (context) => MainNavigator(
+                          //       initialState: _currentState,
+                          //       initialTasks: selectedTasksList,
+                          //       initialQuestions: widget.questions,
+                          //     ),
+                          //   ),
+                          //   (route) => false,
+                          // );
                         }
                       },
                       child: const Text(

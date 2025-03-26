@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:uuid/uuid.dart';
 
-import '../data/legacy_models/journal_entry.dart';
-import '../services/app_data_service.dart';
+import '../../data/legacy_models/journal_entry.dart';
+import '../../services/app_data_service.dart';
 
 class JournalScreen extends StatefulWidget {
   const JournalScreen({super.key});

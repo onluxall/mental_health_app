@@ -382,7 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return state.isLoading
             ? const Scaffold(body: Center(child: CircularProgressIndicator()))
             : Scaffold(
-                backgroundColor: CupertinoColors.systemGroupedBackground,
+                backgroundColor: Colors.grey[100],
                 // bottomNavigationBar: CupertinoNavigationBar(
                 //   middle: const Text('Home'),
                 //   backgroundColor: CupertinoColors.systemBackground,
