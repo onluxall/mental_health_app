@@ -7,12 +7,12 @@ class UserData {
   UserData({
     this.id,
     this.name,
-    required this.email,
+    this.email,
   });
 
   final String? id;
   final String? name;
-  final String email;
+  final String? email;
 
   factory UserData.fromJson(Map<String, dynamic> json) => _$UserDataFromJson(json);
 
