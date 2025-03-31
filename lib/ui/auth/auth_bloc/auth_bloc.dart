@@ -77,8 +77,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future _onAuthEventLogIn(AuthEventLogIn event, Emitter<AuthState> emit) async {
-    print(email);
-    print(password);
     if (email == null || password == null) {
       return;
     }

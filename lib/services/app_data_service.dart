@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../data/legacy_models/journal_entry.dart';
 import '../data/legacy_models/mental_health_category.dart';
 import '../data/legacy_models/mood_entry.dart';
 import '../data/legacy_models/quiz_question.dart';
@@ -298,41 +297,6 @@ class AppDataService {
               isCompleted: task['isCompleted'] as bool,
             ))
         .toList();
-  }
-
-  Future<void> saveJournalEntry(JournalEntry entry) async {
-    final data = await loadAppData() ?? {};
-    final entries = List<Map<String, dynamic>>.from(data[_journalEntriesKey] ?? []);
-    entries.add(entry.toJson());
-    data[_journalEntriesKey] = entries;
-    await _saveData(data);
-  }
-
-  Future<List<JournalEntry>> getJournalEntries() async {
-    final data = await loadAppData();
-    if (data == null) return [];
-
-    final entries = (data[_journalEntriesKey] as List?) ?? [];
-    return entries
-        .map((entry) {
-          if (entry is Map<String, dynamic>) {
-            return JournalEntry.fromJson(entry);
-          }
-          return null;
-        })
-        .whereType<JournalEntry>()
-        .toList();
-  }
-
-  Future<void> updateJournalEntry(JournalEntry entry) async {
-    final data = await loadAppData() ?? {};
-    final entries = List<Map<String, dynamic>>.from(data[_journalEntriesKey] ?? []);
-    final index = entries.indexWhere((e) => e['id'] == entry.id);
-    if (index != -1) {
-      entries[index] = entry.toJson();
-      data[_journalEntriesKey] = entries;
-      await _saveData(data);
-    }
   }
 
   Future<void> deleteJournalEntry(String id) async {

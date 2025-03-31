@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:mental_health_app/data/user/data.dart';
 
 import '../../data/api_models/quote.dart';
+import '../../data/journal/data.dart';
 import '../../use_case/home_init/home_init_use_case.dart';
 import '../base/base_event.dart';
 
@@ -22,6 +23,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   dynamic error;
   Quote? quote;
   UserData? user;
+  JournalEntry? todayJournalEntry;
 
   Future<void> _onHomeEventInit(HomeEventInit event, Emitter<HomeState> emit) async {
     await emit.forEach(
@@ -30,7 +32,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         if (result.isSuccessful()) {
           quote = result.quote;
           user = result.user;
-          isLoading = false;
+          todayJournalEntry = result.todayJournalEntry;
         }
         error = result.error;
         isLoading = result.isLoading;
@@ -43,6 +45,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return HomeState(
       quote: quote,
       user: user,
+      todayJournalEntry: todayJournalEntry,
       isLoading: isLoading,
       error: error,
     );

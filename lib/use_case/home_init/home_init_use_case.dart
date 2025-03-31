@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mental_health_app/data/journal/interface.dart';
 import 'package:mental_health_app/data/user/interface.dart';
 
 import '../../data/api_models/quote.dart';
@@ -13,9 +14,10 @@ abstract class IHomeInitUseCase {
 
 @Injectable(as: IHomeInitUseCase)
 class HomeInitUseCase extends IHomeInitUseCase {
-  HomeInitUseCase(this._userRepo, this._auth);
+  HomeInitUseCase(this._userRepo, this._auth, this._journalRepo);
   final IUserRepo _userRepo;
   final FirebaseAuth _auth;
+  final IJournalRepo _journalRepo;
   @override
   Stream<HomeInitResponse> invoke() async* {
     try {
@@ -25,11 +27,14 @@ class HomeInitUseCase extends IHomeInitUseCase {
       String randomQuote = mentalHealthQuotes.keys.elementAt(random.nextInt(mentalHealthQuotes.length));
       String author = mentalHealthQuotes[randomQuote]!;
       quote = Quote(text: randomQuote, author: author);
-      final id = _auth.currentUser?.uid;
-      final user = await _userRepo.getUser(id: id ?? '');
-      yield HomeInitResponse(quote: quote, user: user);
+      final userId = _auth.currentUser?.uid;
+      final stream = _journalRepo.observeJournalEntryByDate(userId: userId ?? "", date: DateTime.now());
+      final user = await _userRepo.getUser(id: userId ?? '');
+      await for (var result in stream) {
+        yield HomeInitResponse(quote: quote, user: user, todayJournalEntry: result);
+      }
     } catch (e) {
-      print(e);
+      print("Error in HomeInitUseCase: $e");
       yield HomeInitResponse(error: e.toString());
     }
   }
