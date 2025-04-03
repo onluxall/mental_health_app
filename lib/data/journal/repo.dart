@@ -23,18 +23,6 @@ class JournalRepo extends IJournalRepo {
   }
 
   @override
-  Future<void> updateJournalEntry({required String id, required String title, required String content}) async {
-    try {
-      await journalEntryCollection.doc(id).update({
-        'title': title,
-        'content': content,
-      });
-    } catch (e) {
-      print('Error updating journal entry: $e');
-    }
-  }
-
-  @override
   Future<List<JournalEntry>> getJournalEntriesByUser({required String userId}) async {
     try {
       QuerySnapshot snapshot = await journalEntryCollection.where('userId', isEqualTo: userId).get();
@@ -43,6 +31,18 @@ class JournalRepo extends IJournalRepo {
     } catch (e) {
       print('Error fetching journal entries: $e');
       return [];
+    }
+  }
+
+  @override
+  Stream<List<JournalEntry>> observeJournalEntriesByUser({required String userId}) {
+    try {
+      return journalEntryCollection.where('userId', isEqualTo: userId).snapshots().map((snapshot) {
+        return snapshot.docs.map((doc) => JournalEntry.fromJson(doc.data())).toList();
+      });
+    } catch (e) {
+      print('Error observing journal entries: $e');
+      return Stream.value([]);
     }
   }
 
@@ -65,5 +65,17 @@ class JournalRepo extends IJournalRepo {
       print('Error observing journal entry: $e');
     }
     return Stream.value(null);
+  }
+
+  @override
+  Future<void> updateJournalEntry({required String id, required String title, required String content}) async {
+    try {
+      await journalEntryCollection.doc(id).update({
+        'title': title,
+        'content': content,
+      });
+    } catch (e) {
+      print('Error updating journal entry: $e');
+    }
   }
 }
