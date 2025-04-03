@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           return state.isLoading
               ? const Scaffold(body: Center(child: CircularProgressIndicator()))
               : Scaffold(
-                  backgroundColor: Colors.grey[100],
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   body: SafeArea(
                     child: GestureDetector(
                       onTap: () {
