@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mental_health_app/extensions/date_time_extension.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-import '../../get_it_conf.dart';
+import '../../../get_it_conf.dart';
+import '../journal_list_item.dart';
 import 'journal_bloc.dart';
-import 'journal_list_item.dart';
 
 class JournalScreen extends StatelessWidget {
   const JournalScreen({super.key});
