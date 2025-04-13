@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 
-import '../../data/journal/data.dart';
-import '../../use_case/journal_init/journal_init_response.dart';
-import '../../use_case/journal_init/journal_init_use_case.dart';
-import '../base/base_event.dart';
+import '../../../data/journal/data.dart';
+import '../../../use_case/journal_init/journal_init_response.dart';
+import '../../../use_case/journal_init/journal_init_use_case.dart';
+import '../../base/base_event.dart';
 
 part 'journal_event.dart';
 part 'journal_state.dart';
