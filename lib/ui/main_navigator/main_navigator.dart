@@ -4,7 +4,9 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mental_health_app/ui/home/home_screen.dart';
 import 'package:mental_health_app/ui/main_navigator/main_navigator_cubit.dart';
 
+import '../../get_it_conf.dart';
 import '../journal/journal_bloc/journal_screen.dart';
+import '../quiz/quiz_screen.dart';
 import '../task/task_screen.dart';
 import '../therapist_chat/therapist_chat_screen.dart';
 
@@ -14,11 +16,25 @@ class MainNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<MainNavigatorCubit>(
-      create: (context) => MainNavigatorCubit(),
-      child: BlocBuilder<MainNavigatorCubit, int>(builder: (context, state) {
+      create: (context) => getIt.get<MainNavigatorCubit>()..init(),
+      child: BlocConsumer<MainNavigatorCubit, MainNavigatorState>(listener: (context, state) {
+        if (state.userData?.quizCompleted != true && state.isLoading == false) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const QuizScreen(),
+            ),
+          );
+        }
+      }, builder: (context, state) {
+        if (state.isLoading || state.userData?.quizCompleted != true) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          body: _buildChildPage(index: state),
+          body: _buildChildPage(index: state.currentIndex),
           bottomNavigationBar: SafeArea(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
