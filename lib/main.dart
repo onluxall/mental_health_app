@@ -2,10 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/ui/auth/auth_switch.dart';
 
-import 'data/legacy_models/mental_health_category.dart';
 import 'firebase_options.dart';
 import 'get_it_conf.dart';
-import 'ui/tasks_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +23,7 @@ class MentalHealthApp extends StatelessWidget {
       title: 'Mental Health App',
       debugShowCheckedModeBanner: false,
       home: const AuthSwitch(),
-      routes: {
-        '/tasks': (context) => TasksScreen(
-              tasks: [],
-              mentalHealthState: mentalHealthStates[2],
-            ),
-      },
+      routes: {},
     );
   }
 }

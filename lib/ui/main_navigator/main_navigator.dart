@@ -4,7 +4,8 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mental_health_app/ui/home/home_screen.dart';
 import 'package:mental_health_app/ui/main_navigator/main_navigator_cubit.dart';
 
-import '../journal/journal_screen.dart';
+import '../journal/journal_bloc/journal_screen.dart';
+import '../task/task_screen.dart';
 import '../therapist_chat/therapist_chat_screen.dart';
 
 class MainNavigator extends StatelessWidget {
@@ -16,34 +17,23 @@ class MainNavigator extends StatelessWidget {
       create: (context) => MainNavigatorCubit(),
       child: BlocBuilder<MainNavigatorCubit, int>(builder: (context, state) {
         return Scaffold(
-          backgroundColor: Colors.grey[100],
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: _buildChildPage(index: state),
           bottomNavigationBar: SafeArea(
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              decoration: BoxDecoration(
-                // color: Colors.white,
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(100)),
-                boxShadow: [
-                  BoxShadow(
-                    spreadRadius: -10,
-                    blurRadius: 60,
-                    color: Colors.black.withOpacity(.4),
-                    offset: Offset(0, 25),
-                  )
-                ],
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 3),
                 child: GNav(
-                  rippleColor: Colors.grey[300]!,
-                  hoverColor: Colors.grey[100]!,
                   gap: 8,
                   activeColor: Colors.black,
                   iconSize: 24,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                  duration: Duration(milliseconds: 200),
-                  tabBackgroundColor: Colors.grey[100]!,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  duration: const Duration(milliseconds: 200),
+                  tabBackgroundColor: const Color(0xFFEDE7F6),
                   color: Colors.black,
                   tabs: [
                     GButton(
@@ -87,17 +77,13 @@ class MainNavigator extends StatelessWidget {
   Widget _buildChildPage({required int index}) {
     switch (index) {
       case 0:
-        return HomeScreen();
+        return const HomeScreen();
       case 1:
-        return JournalScreen();
+        return const JournalScreen();
       case 2:
-        return TherapistScreen();
+        return const TherapistScreen();
       case 3:
-        return Scaffold(
-          body: Center(
-            child: Text("Tasks"),
-          ),
-        );
+        return const TaskScreen();
       default:
         return Container();
     }
