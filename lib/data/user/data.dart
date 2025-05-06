@@ -8,11 +8,13 @@ class UserData {
     this.id,
     this.name,
     this.email,
+    this.quizCompleted,
   });
 
   final String? id;
   final String? name;
   final String? email;
+  final bool? quizCompleted;
 
   factory UserData.fromJson(Map<String, dynamic> json) => _$UserDataFromJson(json);
 

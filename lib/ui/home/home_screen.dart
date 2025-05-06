@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mental_health_app/ui/home/slider_widget.dart';
 
 import '../../get_it_conf.dart';
 import 'daily_note/daily_note_bottom_sheet.dart';
@@ -30,61 +31,61 @@ class HomeScreen extends StatelessWidget {
                       onTap: () {
                         FocusScope.of(context).unfocus();
                       },
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverToBoxAdapter(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${_getGreeting()}, ${state.user?.name ?? ''}',
+                              style: const TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Visibility(
+                              visible: state.quote?.text != null && state.quote?.author != null,
                               child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    '${_getGreeting()}, ${state.user?.name ?? ''}',
-                                    style: const TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
+                                    state.quote?.text ?? "",
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.grey[600],
+                                      fontStyle: FontStyle.italic,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Visibility(
-                                    visible: state.quote?.text != null && state.quote?.author != null,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          state.quote?.text ?? "",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            color: Colors.grey[600],
-                                            fontStyle: FontStyle.italic,
-                                          ),
-                                        ),
-                                        Text(state.quote?.author ?? ""),
-                                        const SizedBox(height: 8),
-                                        Row(
-                                          children: [
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                showModalBottomSheet(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return DailyNoteBottomSheet(
-                                                        todayEntry: state.todayJournalEntry,
-                                                      );
-                                                    });
-                                              },
-                                              child: Text(state.todayJournalEntry != null ? 'Edit Daily Note' : 'Create Daily Note'),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                  Text(state.quote?.author ?? ""),
+                                  const SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              builder: (context) {
+                                                return DailyNoteBottomSheet(
+                                                  todayEntry: state.todayJournalEntry,
+                                                );
+                                              });
+                                        },
+                                        child: Text(state.todayJournalEntry != null ? 'Edit Daily Note' : 'Create Daily Note'),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
+                            SliderWidget(
+                              value: state.mood ?? 3.0,
+                              onChanged: (value) {
+                                context.read<HomeBloc>().add(HomeEventChangeMood(mood: value));
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

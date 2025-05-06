@@ -5,13 +5,13 @@ class TherapistScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
+    return const CupertinoPageScaffold(
+      navigationBar: CupertinoNavigationBar(
         middle: Text('Therapist'),
       ),
       child: Center(
         child: Text(
-          'Loading...',
+          'Not implemented yet',
         ),
       ),
     );

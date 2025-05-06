@@ -19,7 +19,7 @@ class MentalHealthApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Mental Health App',
       debugShowCheckedModeBanner: false,
       home: const AuthSwitch(),

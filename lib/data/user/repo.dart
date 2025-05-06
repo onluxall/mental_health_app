@@ -24,4 +24,9 @@ class UserRepo implements IUserRepo {
       return UserData.fromJson(snapshot.data()!);
     }
   }
+
+  @override
+  Future updateQuizCompleted({required String id, required bool quizCompleted}) async {
+    await userCollection.doc(id).update({'quizCompleted': quizCompleted});
+  }
 }

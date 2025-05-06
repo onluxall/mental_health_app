@@ -15,6 +15,7 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc(this._dailyQuoteUC) : super(const HomeState()) {
     on<HomeEventInit>(_onHomeEventInit);
+    on<HomeEventChangeMood>(_onHomeEventChangeMood);
   }
 
   final IHomeInitUseCase _dailyQuoteUC;
@@ -24,6 +25,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   Quote? quote;
   UserData? user;
   JournalEntry? todayJournalEntry;
+  double? mood;
 
   Future<void> _onHomeEventInit(HomeEventInit event, Emitter<HomeState> emit) async {
     await emit.forEach(
@@ -41,11 +43,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
+  _onHomeEventChangeMood(HomeEventChangeMood event, Emitter<HomeState> emit) {
+    mood = event.mood;
+    emit(getCurrentState());
+  }
+
   HomeState getCurrentState() {
     return HomeState(
       quote: quote,
       user: user,
       todayJournalEntry: todayJournalEntry,
+      mood: mood,
       isLoading: isLoading,
       error: error,
     );
