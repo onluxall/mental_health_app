@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
@@ -13,7 +14,6 @@ class TaskType {
   final String name;
   final String description;
   final DateTime? duration;
-  // final IconData icon;
   final TaskCategory taskCategory;
 
   TaskType({
@@ -21,7 +21,6 @@ class TaskType {
     required this.duration,
     required this.taskCategory,
     required this.name,
-    // required this.icon,
   });
 }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "398637772626",
+    "project_id": "luxall",
+    "storage_bucket": "luxall.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398637772626:android:764593f32c08ea4ddf548b",
+        "android_client_info": {
+          "package_name": "com.example.mental_health_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA11nOjUbtStGfAAF-oKTPtsSodbdQxEXE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

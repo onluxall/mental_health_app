@@ -22,7 +22,7 @@ class MentalHealthApp extends StatelessWidget {
     return const MaterialApp(
       title: 'Mental Health App',
       debugShowCheckedModeBanner: false,
-      home: AuthSwitch(),
+      home: const AuthSwitch(),
       routes: {},
     );
   }
