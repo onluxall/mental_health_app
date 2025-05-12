@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mental_health_app/ui/home/slider_widget.dart';
 
 import '../../get_it_conf.dart';
+import 'bloc/home_bloc.dart';
 import 'daily_note/daily_note_bottom_sheet.dart';
-import 'home_bloc.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

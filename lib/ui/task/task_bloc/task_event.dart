@@ -4,10 +4,12 @@ abstract class TaskEvent extends BaseEvent {
   TaskEvent({bool? isLoading, dynamic error}) : super(isLoading: isLoading, error: error);
 }
 
-// class ToggleTaskAcceptanceEvent extends TaskEvent {
-//   final String taskId;
-//
-//   ToggleTaskAcceptanceEvent(
-//     this.taskId,
-//   );
-// }
+class TaskEventInit extends TaskEvent {
+  TaskEventInit({bool? isLoading, dynamic error}) : super(isLoading: isLoading, error: error);
+}
+
+class TaskEventUpdate extends TaskEvent {
+  final bool isCompleted;
+  final String? taskId;
+  TaskEventUpdate({required this.isCompleted, required this.taskId, bool? isLoading, dynamic error}) : super(isLoading: isLoading, error: error);
+}

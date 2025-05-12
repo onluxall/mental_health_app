@@ -15,15 +15,18 @@ import 'package:injectable/injectable.dart' as _i526;
 
 import 'data/journal/interface.dart' as _i485;
 import 'data/journal/repo.dart' as _i268;
+import 'data/task/interface.dart' as _i0;
+import 'data/task/repo.dart' as _i207;
 import 'data/user/interface.dart' as _i494;
 import 'data/user/repo.dart' as _i526;
 import 'ui/auth/auth_bloc/auth_bloc.dart' as _i123;
+import 'ui/home/bloc/home_bloc.dart' as _i56;
 import 'ui/home/daily_note/daily_note_bloc.dart' as _i252;
-import 'ui/home/home_bloc.dart' as _i470;
 import 'ui/journal/journal_bloc/journal_bloc.dart' as _i635;
 import 'ui/journal/journal_entry_edit_bottom_sheet/edit_journal_entry_bloc.dart'
     as _i525;
 import 'ui/main_navigator/main_navigator_cubit.dart' as _i133;
+import 'ui/task/task_bloc/task_bloc.dart' as _i488;
 import 'use_case/add_journal_entry/add_journal_entry_use_case.dart' as _i811;
 import 'use_case/auth_init/auth_init_use_case.dart' as _i528;
 import 'use_case/edit_journal_entry/edit_journal_entry_use_case.dart' as _i267;
@@ -31,6 +34,8 @@ import 'use_case/home_init/home_init_use_case.dart' as _i631;
 import 'use_case/journal_init/journal_init_use_case.dart' as _i424;
 import 'use_case/log_in/log_in_use_case.dart' as _i646;
 import 'use_case/sign_up/sign_up_use_case.dart' as _i294;
+import 'use_case/task_init/task_init_use_case.dart' as _i503;
+import 'use_case/task_update/task_update_use_case.dart' as _i878;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 _i174.GetIt $initGetIt(
@@ -48,6 +53,7 @@ _i174.GetIt $initGetIt(
   gh.factory<_i528.IAuthInitUseCase>(
       () => _i528.AuthInitUseCase(gh<_i59.FirebaseAuth>()));
   gh.factory<_i485.IJournalRepo>(() => _i268.JournalRepo());
+  gh.factory<_i0.ITaskRepo>(() => _i207.TaskRepo());
   gh.factory<_i811.IAddJournalEntryUseCase>(() => _i811.AddJournalEntryUseCase(
         gh<_i485.IJournalRepo>(),
         gh<_i59.FirebaseAuth>(),
@@ -60,6 +66,8 @@ _i174.GetIt $initGetIt(
         gh<_i811.IAddJournalEntryUseCase>(),
         gh<_i267.IUpdateJournalEntryUseCase>(),
       ));
+  gh.factory<_i503.ITaskInitUseCase>(
+      () => _i503.TaskInitUseCase(taskRepo: gh<_i0.ITaskRepo>()));
   gh.factory<_i133.MainNavigatorCubit>(() => _i133.MainNavigatorCubit(
         gh<_i494.IUserRepo>(),
         gh<_i59.FirebaseAuth>(),
@@ -69,6 +77,8 @@ _i174.GetIt $initGetIt(
         gh<_i59.FirebaseAuth>(),
         gh<_i485.IJournalRepo>(),
       ));
+  gh.factory<_i878.ITaskUpdateUseCase>(
+      () => _i878.TaskUpdateUseCase(gh<_i0.ITaskRepo>()));
   gh.factory<_i123.AuthBloc>(() => _i123.AuthBloc(
         gh<_i294.ISignUpUseCase>(),
         gh<_i646.ILogInUseCase>(),
@@ -80,8 +90,11 @@ _i174.GetIt $initGetIt(
       ));
   gh.factory<_i525.EditJournalEntryBloc>(
       () => _i525.EditJournalEntryBloc(gh<_i267.IUpdateJournalEntryUseCase>()));
-  gh.factory<_i470.HomeBloc>(
-      () => _i470.HomeBloc(gh<_i631.IHomeInitUseCase>()));
+  gh.factory<_i56.HomeBloc>(() => _i56.HomeBloc(gh<_i631.IHomeInitUseCase>()));
+  gh.factory<_i488.TaskBloc>(() => _i488.TaskBloc(
+        gh<_i503.ITaskInitUseCase>(),
+        gh<_i878.ITaskUpdateUseCase>(),
+      ));
   gh.factory<_i635.JournalBloc>(
       () => _i635.JournalBloc(gh<_i424.IJournalInitUseCase>()));
   return getIt;

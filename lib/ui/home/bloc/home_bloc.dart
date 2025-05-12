@@ -3,10 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mental_health_app/data/user/data.dart';
 
-import '../../data/api_models/quote.dart';
-import '../../data/journal/data.dart';
-import '../../use_case/home_init/home_init_use_case.dart';
-import '../base/base_event.dart';
+import '../../../data/api_models/quote.dart';
+import '../../../data/journal/data.dart';
+import '../../../use_case/home_init/home_init_use_case.dart';
+import '../../base/base_event.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

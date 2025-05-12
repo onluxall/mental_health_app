@@ -9,7 +9,7 @@ import '../../services/app_data_service.dart';
 import '../../widgets/activity_details_sheet.dart';
 import '../../widgets/activity_note_panel.dart';
 import '../edit_note_screen.dart';
-import 'home_bloc.dart';
+import 'bloc/home_bloc.dart';
 
 class HomeScreenLegacy extends StatefulWidget {
   final MentalHealthState? mentalHealthState;
