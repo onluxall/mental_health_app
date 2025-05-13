@@ -21,7 +21,6 @@ class TaskRepo implements ITaskRepo {
 
   @override
   Future<void> updateUserTask({required String taskId, required bool isCompleted}) async {
-    print(taskId);
     await taskCollection.doc(taskId).update({'isCompleted': isCompleted});
   }
 }

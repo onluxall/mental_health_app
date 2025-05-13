@@ -5,7 +5,7 @@ import 'package:mental_health_app/ui/home/home_screen.dart';
 import 'package:mental_health_app/ui/main_navigator/main_navigator_cubit.dart';
 
 import '../../get_it_conf.dart';
-import '../journal/journal_bloc/journal_screen.dart';
+import '../journal/journal_screen.dart';
 import '../quiz/quiz_screen.dart';
 import '../task/task_screen.dart';
 import '../therapist_chat/therapist_chat_screen.dart';
@@ -97,7 +97,7 @@ class MainNavigator extends StatelessWidget {
       case 1:
         return const JournalScreen();
       case 2:
-        return const TherapistScreen();
+        return const TherapistChatScreen();
       case 3:
         return const TaskScreen();
       default:
