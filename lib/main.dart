@@ -12,7 +12,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await configureDependencies();
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "api_keys.env");
   runApp(const MentalHealthApp());
 }
 
