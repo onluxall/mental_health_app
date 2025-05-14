@@ -68,6 +68,11 @@ _i174.GetIt $initGetIt(
       ));
   gh.factory<_i503.ITaskInitUseCase>(
       () => _i503.TaskInitUseCase(taskRepo: gh<_i0.ITaskRepo>()));
+  gh.factory<_i424.IJournalInitUseCase>(() => _i424.JournalInitUseCase(
+        gh<_i59.FirebaseAuth>(),
+        gh<_i485.IJournalRepo>(),
+        gh<_i0.ITaskRepo>(),
+      ));
   gh.factory<_i133.MainNavigatorCubit>(() => _i133.MainNavigatorCubit(
         gh<_i494.IUserRepo>(),
         gh<_i59.FirebaseAuth>(),
@@ -79,14 +84,12 @@ _i174.GetIt $initGetIt(
       ));
   gh.factory<_i878.ITaskUpdateUseCase>(
       () => _i878.TaskUpdateUseCase(gh<_i0.ITaskRepo>()));
+  gh.factory<_i635.JournalBloc>(
+      () => _i635.JournalBloc(gh<_i424.IJournalInitUseCase>()));
   gh.factory<_i123.AuthBloc>(() => _i123.AuthBloc(
         gh<_i294.ISignUpUseCase>(),
         gh<_i646.ILogInUseCase>(),
         gh<_i528.IAuthInitUseCase>(),
-      ));
-  gh.factory<_i424.IJournalInitUseCase>(() => _i424.JournalInitUseCase(
-        gh<_i59.FirebaseAuth>(),
-        gh<_i485.IJournalRepo>(),
       ));
   gh.factory<_i525.EditJournalEntryBloc>(
       () => _i525.EditJournalEntryBloc(gh<_i267.IUpdateJournalEntryUseCase>()));
@@ -95,7 +98,5 @@ _i174.GetIt $initGetIt(
         gh<_i503.ITaskInitUseCase>(),
         gh<_i878.ITaskUpdateUseCase>(),
       ));
-  gh.factory<_i635.JournalBloc>(
-      () => _i635.JournalBloc(gh<_i424.IJournalInitUseCase>()));
   return getIt;
 }

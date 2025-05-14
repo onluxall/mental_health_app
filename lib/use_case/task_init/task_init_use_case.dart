@@ -19,9 +19,8 @@ class TaskInitUseCase implements ITaskInitUseCase {
     yield TaskInitResponse(isLoading: true);
     try {
       final userId = FirebaseAuth.instance.currentUser?.uid ?? "";
-      final stream = taskRepo.getAllUserTasksForDate(date: DateTime.now().atStartOfDay(), userId: userId);
+      final stream = taskRepo.observeAllUserTasksForDate(date: DateTime.now().atStartOfDay(), userId: userId);
       await for (final tasks in stream) {
-        print("Tasks: $tasks");
         yield TaskInitResponse(tasks: tasks, isLoading: false);
       }
     } catch (e) {

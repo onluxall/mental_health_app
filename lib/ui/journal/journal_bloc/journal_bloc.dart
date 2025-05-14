@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:mental_health_app/data/task/data.dart';
 
 import '../../../data/journal/data.dart';
 import '../../../use_case/journal_init/journal_init_response.dart';
@@ -32,6 +33,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
         return state.copyWith(
           isLoading: false,
           userJournalEntries: response.journalEntries,
+          userTasks: response.userTasks,
           chosenDate: state.chosenDate ?? DateTime.now(),
         );
       }

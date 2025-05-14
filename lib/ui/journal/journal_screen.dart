@@ -4,6 +4,7 @@ import 'package:mental_health_app/extensions/date_time_extension.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../get_it_conf.dart';
+import '../task/task_card.dart';
 import 'journal_bloc/journal_bloc.dart';
 import 'journal_list_item.dart';
 
@@ -24,7 +25,7 @@ class JournalScreen extends StatelessWidget {
           return Column(
             children: [
               TableCalendar(
-                eventLoader: (state.userJournalEntries.isNotEmpty
+                eventLoader: (state.userJournalEntries.isNotEmpty || state.userTasks.isNotEmpty
                     ? (day) {
                         return state.userJournalEntries.where((entry) => day.isSameDayAsTimestamp(entry.date)).toList();
                       }
@@ -83,21 +84,25 @@ class JournalScreen extends StatelessWidget {
                             );
                           },
                         ),
-                        Text(
-                          "Tasks",
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        Visibility(
+                          visible: state.userTasks.where((task) => state.chosenDate?.isSameDayAsTimestamp(task.date) ?? false).isNotEmpty,
+                          child: const Text(
+                            "Tasks",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                        // ListView.builder(
-                        //   shrinkWrap: true,
-                        //   physics: const NeverScrollableScrollPhysics(),
-                        //   itemCount: state.userTasks.length,
-                        //   itemBuilder: (context, index) {
-                        //     final entry = state.userJournalEntries[index];
-                        //     return JournalListItem(
-                        //       journalEntry: entry,
-                        //     );
-                        //   },
-                        // ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.userTasks.where((task) => state.chosenDate?.isSameDayAsTimestamp(task.date) ?? false).length,
+                          itemBuilder: (context, index) {
+                            final userTask = state.userTasks.where((task) => state.chosenDate?.isSameDayAsTimestamp(task.date) ?? false).elementAt(index);
+                            return TaskCard(
+                              onTap: () {},
+                              task: userTask,
+                            );
+                          },
+                        ),
                       ],
                     ),
                   ),

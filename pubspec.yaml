@@ -52,6 +52,7 @@ dependencies:
   google_generative_ai: ^0.4.6
   flutter_gemini: ^3.0.0
   flutter_dotenv: ^5.2.1
+  rxdart: ^0.28.0
 
 dev_dependencies:
   flutter_test:

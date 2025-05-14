@@ -2,14 +2,14 @@ part of 'journal_bloc.dart';
 
 class JournalState extends Equatable {
   final List<JournalEntry> userJournalEntries;
-  final List<JournalEntry> presentedJournalEntries;
+  final List<UserTask> userTasks;
   final DateTime? chosenDate;
   final bool isLoading;
   final dynamic error;
 
   const JournalState({
     this.userJournalEntries = const [],
-    this.presentedJournalEntries = const [],
+    this.userTasks = const [],
     this.chosenDate,
     this.isLoading = false,
     this.error,
@@ -17,14 +17,14 @@ class JournalState extends Equatable {
 
   JournalState copyWith({
     List<JournalEntry>? userJournalEntries,
-    List<JournalEntry>? presentedJournalEntries,
+    List<UserTask>? userTasks,
     DateTime? chosenDate,
     bool? isLoading,
     dynamic error,
   }) {
     return JournalState(
       userJournalEntries: userJournalEntries ?? this.userJournalEntries,
-      presentedJournalEntries: presentedJournalEntries ?? this.presentedJournalEntries,
+      userTasks: userTasks ?? this.userTasks,
       chosenDate: chosenDate ?? this.chosenDate,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
@@ -32,5 +32,5 @@ class JournalState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [userJournalEntries, chosenDate, isLoading, error];
+  List<Object?> get props => [userJournalEntries, userTasks, chosenDate, isLoading, error];
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mental_health_app/ui/task/task_bloc/task_bloc.dart';
+import 'package:mental_health_app/ui/task/task_card.dart';
 
 import '../../data/task/data.dart';
 import '../../get_it_conf.dart';
@@ -33,47 +34,16 @@ class TaskScreen extends StatelessWidget {
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       final UserTask task = state.tasks[index];
-                      final bool isCompleted = task.isCompleted ?? false;
-                      return GestureDetector(
-                        onTap: () {
-                          context.read<TaskBloc>().add(TaskEventUpdate(
-                                isCompleted: !isCompleted,
-                                taskId: task.id,
-                              ));
-                        },
-                        child: Card(
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(16),
-                            leading: Container(
-                              width: 40,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                color: isCompleted ? Colors.green.shade50 : Colors.grey.shade100,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                isCompleted ? Icons.check : Icons.access_time,
-                                color: isCompleted ? Colors.green : Colors.grey,
-                              ),
-                            ),
-                            title: Text(
-                              task.title,
-                              style: TextStyle(
-                                decoration: isCompleted ? TextDecoration.lineThrough : null,
-                                color: isCompleted ? Colors.grey : Colors.black,
-                              ),
-                            ),
-                            subtitle: Text(
-                              task.duration,
-                              style: TextStyle(
-                                color: isCompleted ? Colors.grey.shade400 : Colors.grey.shade600,
-                              ),
-                            ),
-                          ),
-                        ),
+                      final isCompleted = task.isCompleted ?? false;
+                      return TaskCard(
+                        onTap: () => context.read<TaskBloc>().add(TaskEventUpdate(
+                              isCompleted: !isCompleted,
+                              taskId: task.id,
+                            )),
+                        task: task,
                       );
                     },
-                    separatorBuilder: (context, index) => SizedBox(height: 8),
+                    separatorBuilder: (context, index) => const SizedBox(height: 8),
                     itemCount: state.tasks.length),
               ],
             ),
