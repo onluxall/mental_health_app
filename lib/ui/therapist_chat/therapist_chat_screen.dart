@@ -21,19 +21,22 @@ class _TherapistChatState extends State<TherapistChatScreen> {
       if (_controller.text.isNotEmpty) {
         _messages.add(Message(text: _controller.text, isUser: true));
         _isLoading = true;
-      }
-      Gemini.init(apiKey: dotenv.env['GOOGLE_API_KEY'] ?? "");
-      final prompt = _controller.text.trim();
-      await Gemini.instance.prompt(parts: [
-        Part.text(prompt),
-      ]).then((value) {
-        setState(() {
-          _messages.add(Message(text: value?.output ?? "", isUser: false));
-          _isLoading = false;
+
+        Gemini.init(apiKey: dotenv.env['GOOGLE_API_KEY'] ?? "");
+        final prompt = _controller.text.trim();
+        await Gemini.instance.prompt(parts: [
+          Part.text(prompt),
+        ]).then((value) {
+          setState(() {
+            _messages.add(Message(text: value?.output ?? "", isUser: false));
+            _isLoading = false;
+          });
         });
-      });
-      _controller.clear();
-    } catch (e) {}
+        _controller.clear();
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 
   @override
