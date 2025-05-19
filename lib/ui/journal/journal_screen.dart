@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mental_health_app/extensions/date_time_extension.dart';
+import 'package:mental_health_app/ui/journal/activity_card.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../get_it_conf.dart';
@@ -100,6 +101,26 @@ class JournalScreen extends StatelessWidget {
                             return TaskCard(
                               onTap: () {},
                               task: userTask,
+                            );
+                          },
+                        ),
+                        Visibility(
+                          visible: state.activities.where((task) => state.chosenDate?.isSameDayAsTimestamp(task.createdAt) ?? false).isNotEmpty,
+                          child: const Text(
+                            "Activities",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.activities.where((activity) => state.chosenDate?.isSameDayAsTimestamp(activity.createdAt) ?? false).length,
+                          itemBuilder: (context, index) {
+                            final activity =
+                                state.activities.where((activity) => state.chosenDate?.isSameDayAsTimestamp(activity.createdAt) ?? false).elementAt(index);
+                            return ActivityCard(
+                              onTap: () {},
+                              activity: activity,
                             );
                           },
                         ),

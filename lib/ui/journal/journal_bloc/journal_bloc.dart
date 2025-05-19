@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
 import 'package:mental_health_app/data/task/data.dart';
 
+import '../../../data/activity/data.dart';
 import '../../../data/journal/data.dart';
 import '../../../use_case/journal_init/journal_init_response.dart';
 import '../../../use_case/journal_init/journal_init_use_case.dart';
@@ -34,6 +35,7 @@ class JournalBloc extends Bloc<JournalEvent, JournalState> {
           isLoading: false,
           userJournalEntries: response.journalEntries,
           userTasks: response.userTasks,
+          activities: response.activities,
           chosenDate: state.chosenDate ?? DateTime.now(),
         );
       }

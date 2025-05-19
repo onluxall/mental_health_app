@@ -13,6 +13,8 @@ import 'package:firebase_auth/firebase_auth.dart' as _i59;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import 'data/activity/interface.dart' as _i805;
+import 'data/activity/repo.dart' as _i999;
 import 'data/journal/interface.dart' as _i485;
 import 'data/journal/repo.dart' as _i268;
 import 'data/task/interface.dart' as _i0;
@@ -27,6 +29,7 @@ import 'ui/journal/journal_entry_edit_bottom_sheet/edit_journal_entry_bloc.dart'
     as _i525;
 import 'ui/main_navigator/main_navigator_cubit.dart' as _i133;
 import 'ui/task/task_bloc/task_bloc.dart' as _i488;
+import 'use_case/add_activity/add_activity_use_case.dart' as _i914;
 import 'use_case/add_journal_entry/add_journal_entry_use_case.dart' as _i811;
 import 'use_case/auth_init/auth_init_use_case.dart' as _i528;
 import 'use_case/edit_journal_entry/edit_journal_entry_use_case.dart' as _i267;
@@ -60,6 +63,7 @@ _i174.GetIt $initGetIt(
       ));
   gh.factory<_i294.ISignUpUseCase>(
       () => _i294.SignUpUseCase(gh<_i494.IUserRepo>()));
+  gh.factory<_i805.IActivityRepo>(() => _i999.ActivityRepo());
   gh.factory<_i267.IUpdateJournalEntryUseCase>(
       () => _i267.UpdateJournalEntryUseCase(gh<_i485.IJournalRepo>()));
   gh.factory<_i252.DailyNoteBloc>(() => _i252.DailyNoteBloc(
@@ -72,6 +76,7 @@ _i174.GetIt $initGetIt(
         gh<_i59.FirebaseAuth>(),
         gh<_i485.IJournalRepo>(),
         gh<_i0.ITaskRepo>(),
+        gh<_i805.IActivityRepo>(),
       ));
   gh.factory<_i133.MainNavigatorCubit>(() => _i133.MainNavigatorCubit(
         gh<_i494.IUserRepo>(),
@@ -86,6 +91,8 @@ _i174.GetIt $initGetIt(
       () => _i878.TaskUpdateUseCase(gh<_i0.ITaskRepo>()));
   gh.factory<_i635.JournalBloc>(
       () => _i635.JournalBloc(gh<_i424.IJournalInitUseCase>()));
+  gh.factory<_i914.IAddActivityUseCase>(
+      () => _i914.AddActivityUseCase(gh<_i805.IActivityRepo>()));
   gh.factory<_i123.AuthBloc>(() => _i123.AuthBloc(
         gh<_i294.ISignUpUseCase>(),
         gh<_i646.ILogInUseCase>(),
@@ -93,7 +100,10 @@ _i174.GetIt $initGetIt(
       ));
   gh.factory<_i525.EditJournalEntryBloc>(
       () => _i525.EditJournalEntryBloc(gh<_i267.IUpdateJournalEntryUseCase>()));
-  gh.factory<_i56.HomeBloc>(() => _i56.HomeBloc(gh<_i631.IHomeInitUseCase>()));
+  gh.factory<_i56.HomeBloc>(() => _i56.HomeBloc(
+        gh<_i631.IHomeInitUseCase>(),
+        gh<_i914.IAddActivityUseCase>(),
+      ));
   gh.factory<_i488.TaskBloc>(() => _i488.TaskBloc(
         gh<_i503.ITaskInitUseCase>(),
         gh<_i878.ITaskUpdateUseCase>(),

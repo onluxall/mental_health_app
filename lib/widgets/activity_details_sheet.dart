@@ -30,7 +30,6 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
   @override
   void initState() {
     super.initState();
-    // Convert duration string (e.g., "10 min") to double
     _selectedDuration = double.parse(widget.duration.split(' ')[0]);
     _activityNote = widget.note;
     _noteController.text = _activityNote;
@@ -47,7 +46,6 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
   }
 
   void _startActivity() {
-    widget.note = _activityNote;
     widget.onSave(_activityNote, _getDurationText(_selectedDuration));
     Navigator.pop(context);
   }
@@ -80,7 +78,7 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                
+
                 // Header
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
@@ -124,12 +122,12 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
                     ],
                   ),
                 ),
-                
+
                 Container(
                   height: 1,
                   color: CupertinoColors.systemGrey5,
                 ),
-                
+
                 // Duration Section
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -212,12 +210,12 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
                     ],
                   ),
                 ),
-                
+
                 Container(
                   height: 1,
                   color: CupertinoColors.systemGrey5,
                 ),
-                
+
                 // Note Section
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -253,15 +251,14 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
                     ],
                   ),
                 ),
-                
+
                 const SizedBox(height: 16),
-                
-                // Start Button
+
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: CupertinoButton.filled(
                     onPressed: _startActivity,
-                    child: const Text('Start Activity'),
+                    child: const Text('Add Activity'),
                   ),
                 ),
               ],
@@ -271,4 +268,4 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
       ),
     );
   }
-} 
+}

@@ -1,13 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mental_health_app/ui/home/slider_widget.dart';
 
+import '../../data/activity/data.dart';
 import '../../get_it_conf.dart';
+import '../../widgets/activity_details_sheet.dart';
 import 'bloc/home_bloc.dart';
 import 'daily_note/daily_note_bottom_sheet.dart';
-import '../../widgets/activity_details_sheet.dart';
 
-// Recommended activities data
+enum ActivityCategory {
+  mindfulness,
+  creative,
+  social,
+  active,
+}
+
+Color getCategoryColor(ActivityCategory category) {
+  switch (category) {
+    case ActivityCategory.mindfulness:
+      return Colors.purple;
+    case ActivityCategory.creative:
+      return Colors.red;
+    case ActivityCategory.social:
+      return Colors.blue;
+    case ActivityCategory.active:
+      return Colors.green;
+  }
+}
+
 final List<Map<String, dynamic>> _recommendedActivities = [
   {
     'title': 'Morning Meditation',
@@ -30,6 +51,7 @@ void _showActivityDetails(
   required String duration,
   required IconData icon,
   required Color color,
+  required Function(String note, String duration) onSave,
 }) {
   showModalBottomSheet(
     context: context,
@@ -39,9 +61,7 @@ void _showActivityDetails(
       duration: duration,
       icon: icon,
       color: color,
-      onSave: (note, duration) {
-        // Optionally handle save
-      },
+      onSave: onSave,
     ),
   );
 }
@@ -73,6 +93,18 @@ Widget _buildActivityCard(
             duration: '10 min',
             icon: icon,
             color: color,
+            onSave: (note, duration) {
+              context.read<HomeBloc>().add(
+                    HomeEventAddActivity(
+                      activity: Activity(
+                        createdAt: Timestamp.now(),
+                        title: title,
+                        note: note,
+                        duration: duration,
+                      ),
+                    ),
+                  );
+            },
           );
         },
         child: Column(
@@ -252,6 +284,19 @@ class HomeScreen extends StatelessWidget {
                                       duration: activity['duration'],
                                       icon: activity['icon'],
                                       color: Theme.of(context).primaryColor,
+                                      onSave: (note, duration) {
+                                        context.read<HomeBloc>().add(
+                                              HomeEventAddActivity(
+                                                activity: Activity(
+                                                  createdAt: Timestamp.now(),
+                                                  title: activity['title'],
+                                                  note: note,
+                                                  duration: duration,
+                                                  isRecommended: true,
+                                                ),
+                                              ),
+                                            );
+                                      },
                                     );
                                   },
                                   child: Column(
@@ -355,73 +400,73 @@ class HomeScreen extends StatelessWidget {
                             context,
                             icon: Icons.favorite,
                             title: 'Meditation',
-                            color: Colors.pink,
+                            color: getCategoryColor(ActivityCategory.mindfulness),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.book,
                             title: 'Journaling',
-                            color: Colors.blue,
+                            color: getCategoryColor(ActivityCategory.mindfulness),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.air,
                             title: 'Breathing',
-                            color: Colors.green,
+                            color: getCategoryColor(ActivityCategory.mindfulness),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.music_note,
                             title: 'Music',
-                            color: Colors.orange,
+                            color: getCategoryColor(ActivityCategory.creative),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.sports_basketball,
                             title: 'Exercise',
-                            color: Colors.purple,
+                            color: getCategoryColor(ActivityCategory.active),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.nightlight_round,
                             title: 'Sleep',
-                            color: Colors.indigo,
+                            color: getCategoryColor(ActivityCategory.mindfulness),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.people,
                             title: 'Social',
-                            color: Colors.teal,
+                            color: getCategoryColor(ActivityCategory.social),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.brush,
                             title: 'Art',
-                            color: Colors.red,
+                            color: getCategoryColor(ActivityCategory.creative),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.wb_sunny,
                             title: 'Nature',
-                            color: Colors.green,
+                            color: getCategoryColor(ActivityCategory.active),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.chat,
                             title: 'Therapy',
-                            color: Colors.blue,
+                            color: getCategoryColor(ActivityCategory.social),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.sports_esports,
                             title: 'Games',
-                            color: Colors.amber,
+                            color: getCategoryColor(ActivityCategory.active),
                           ),
                           _buildActivityCard(
                             context,
                             icon: Icons.favorite_border,
                             title: 'Self Care',
-                            color: Colors.pink,
+                            color: getCategoryColor(ActivityCategory.mindfulness),
                           ),
                         ]),
                       ),
