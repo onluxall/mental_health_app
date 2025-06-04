@@ -36,7 +36,7 @@ class TaskCard extends StatelessWidget {
             ),
           ),
           subtitle: Text(
-            task.duration,
+            '${(task.duration.millisecondsSinceEpoch * 0.001 / 60).floor()} minutes',
             style: TextStyle(
               color: isCompleted ? Colors.grey.shade400 : Colors.grey.shade600,
             ),
