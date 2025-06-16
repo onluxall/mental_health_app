@@ -4,8 +4,7 @@ import '../../data/task/data.dart';
 import '../base_use_case_response.dart';
 
 class JournalInitResponse extends BaseUseCaseResponse {
-  JournalInitResponse({this.journalEntries, this.userTasks, this.activities, bool isLoading = false, dynamic error})
-      : super(isLoading: isLoading, error: error);
+  JournalInitResponse({this.journalEntries, this.userTasks, this.activities, super.isLoading, super.error});
 
   final List<JournalEntry>? journalEntries;
   final List<UserTask>? userTasks;

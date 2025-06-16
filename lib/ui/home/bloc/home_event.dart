@@ -6,11 +6,6 @@ abstract class HomeEvent extends BaseEvent {
 
 class HomeEventInit extends HomeEvent {}
 
-class HomeEventChangeMood extends HomeEvent {
-  final double mood;
-  HomeEventChangeMood({required this.mood});
-}
-
 class HomeEventAddActivity extends HomeEvent {
   final Activity activity;
   HomeEventAddActivity({required this.activity});
