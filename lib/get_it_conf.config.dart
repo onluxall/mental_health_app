@@ -15,6 +15,8 @@ import 'package:injectable/injectable.dart' as _i526;
 
 import 'data/activity/interface.dart' as _i805;
 import 'data/activity/repo.dart' as _i999;
+import 'data/emotion/interface.dart' as _i756;
+import 'data/emotion/repo.dart' as _i634;
 import 'data/journal/interface.dart' as _i485;
 import 'data/journal/repo.dart' as _i268;
 import 'data/task/interface.dart' as _i0;
@@ -24,18 +26,21 @@ import 'data/user/repo.dart' as _i526;
 import 'ui/auth/auth_bloc/auth_bloc.dart' as _i123;
 import 'ui/home/bloc/home_bloc.dart' as _i56;
 import 'ui/home/daily_note/daily_note_bloc.dart' as _i252;
+import 'ui/home/emotions_slider/emotions_slider_bloc.dart' as _i668;
 import 'ui/journal/journal_bloc/journal_bloc.dart' as _i635;
 import 'ui/journal/journal_entry_edit_bottom_sheet/edit_journal_entry_bloc.dart'
     as _i525;
 import 'ui/main_navigator/main_navigator_cubit.dart' as _i133;
 import 'ui/task/task_bloc/task_bloc.dart' as _i488;
 import 'use_case/add_activity/add_activity_use_case.dart' as _i914;
+import 'use_case/add_emotion/add_emotion_use_case.dart' as _i772;
 import 'use_case/add_journal_entry/add_journal_entry_use_case.dart' as _i811;
 import 'use_case/auth_init/auth_init_use_case.dart' as _i528;
 import 'use_case/edit_journal_entry/edit_journal_entry_use_case.dart' as _i267;
 import 'use_case/home_init/home_init_use_case.dart' as _i631;
 import 'use_case/journal_init/journal_init_use_case.dart' as _i424;
 import 'use_case/log_in/log_in_use_case.dart' as _i646;
+import 'use_case/observe_emotions/observe_emotions_use_case.dart' as _i699;
 import 'use_case/sign_up/sign_up_use_case.dart' as _i294;
 import 'use_case/task_init/task_init_use_case.dart' as _i503;
 import 'use_case/task_update/task_update_use_case.dart' as _i878;
@@ -64,6 +69,13 @@ _i174.GetIt $initGetIt(
   gh.factory<_i294.ISignUpUseCase>(
       () => _i294.SignUpUseCase(gh<_i494.IUserRepo>()));
   gh.factory<_i805.IActivityRepo>(() => _i999.ActivityRepo());
+  gh.factory<_i756.IEmotionRepo>(() => _i634.EmotionRepo());
+  gh.factory<_i631.IHomeInitUseCase>(() => _i631.HomeInitUseCase(
+        gh<_i494.IUserRepo>(),
+        gh<_i59.FirebaseAuth>(),
+        gh<_i485.IJournalRepo>(),
+        gh<_i756.IEmotionRepo>(),
+      ));
   gh.factory<_i267.IUpdateJournalEntryUseCase>(
       () => _i267.UpdateJournalEntryUseCase(gh<_i485.IJournalRepo>()));
   gh.factory<_i252.DailyNoteBloc>(() => _i252.DailyNoteBloc(
@@ -82,11 +94,6 @@ _i174.GetIt $initGetIt(
         gh<_i494.IUserRepo>(),
         gh<_i59.FirebaseAuth>(),
       ));
-  gh.factory<_i631.IHomeInitUseCase>(() => _i631.HomeInitUseCase(
-        gh<_i494.IUserRepo>(),
-        gh<_i59.FirebaseAuth>(),
-        gh<_i485.IJournalRepo>(),
-      ));
   gh.factory<_i878.ITaskUpdateUseCase>(
       () => _i878.TaskUpdateUseCase(gh<_i0.ITaskRepo>()));
   gh.factory<_i635.JournalBloc>(
@@ -98,6 +105,12 @@ _i174.GetIt $initGetIt(
         gh<_i646.ILogInUseCase>(),
         gh<_i528.IAuthInitUseCase>(),
       ));
+  gh.factory<_i772.IAddEmotionUseCase>(
+      () => _i772.AddEmotionUseCase(gh<_i756.IEmotionRepo>()));
+  gh.factory<_i699.IObserveEmotionsUseCase>(
+      () => _i699.ObserveEmotionsUseCase(gh<_i756.IEmotionRepo>()));
+  gh.factory<_i668.EmotionsSliderBloc>(
+      () => _i668.EmotionsSliderBloc(gh<_i772.IAddEmotionUseCase>()));
   gh.factory<_i525.EditJournalEntryBloc>(
       () => _i525.EditJournalEntryBloc(gh<_i267.IUpdateJournalEntryUseCase>()));
   gh.factory<_i56.HomeBloc>(() => _i56.HomeBloc(

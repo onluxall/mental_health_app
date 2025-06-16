@@ -1,7 +1,7 @@
 part of 'journal_bloc.dart';
 
 abstract class JournalEvent extends BaseEvent {
-  JournalEvent({bool? isLoading, dynamic error}) : super(isLoading: isLoading, error: error);
+  JournalEvent({super.isLoading, super.error});
 }
 
 class JournalEventInit extends JournalEvent {}

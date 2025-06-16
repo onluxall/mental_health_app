@@ -44,7 +44,8 @@ class UserTask {
   final String? id;
   final String? userId;
   final String title;
-  final String duration;
+  @JsonKey(fromJson: _fromJson, toJson: _toJson)
+  final Timestamp duration;
   final bool? isCompleted;
   @JsonKey(fromJson: _fromJson, toJson: _toJson)
   final Timestamp date;

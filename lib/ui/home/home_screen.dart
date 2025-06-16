@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mental_health_app/ui/home/slider_widget.dart';
+import 'package:mental_health_app/ui/home/emotions_slider/emotions_slider_widget.dart';
 
 import '../../data/activity/data.dart';
 import '../../get_it_conf.dart';
@@ -216,153 +216,12 @@ class HomeScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            SliderWidget(
-                              value: state.mood ?? 3.0,
-                              onChanged: (value) {
-                                context.read<HomeBloc>().add(HomeEventChangeMood(mood: value));
-                              },
-                            ),
+                            EmotionsSliderWidget(initialEmotionData: state.todayEmotionData),
                           ],
                         ),
                       ),
                     ),
 
-                    // Recommended Activities Section
-                    SliverToBoxAdapter(
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Recommended Activities',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                // TODO: Navigate to all activities
-                              },
-                              child: const Text('See All'),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      sliver: SliverGrid(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          childAspectRatio: 1.0,
-                        ),
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            final activity = _recommendedActivities[index];
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).cardColor,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey.shade200,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(12),
-                                  onTap: () {
-                                    _showActivityDetails(
-                                      context,
-                                      title: activity['title'],
-                                      note: activity['note'],
-                                      duration: activity['duration'],
-                                      icon: activity['icon'],
-                                      color: Theme.of(context).primaryColor,
-                                      onSave: (note, duration) {
-                                        context.read<HomeBloc>().add(
-                                              HomeEventAddActivity(
-                                                activity: Activity(
-                                                  createdAt: Timestamp.now(),
-                                                  title: activity['title'],
-                                                  note: note,
-                                                  duration: duration,
-                                                  isRecommended: true,
-                                                ),
-                                              ),
-                                            );
-                                      },
-                                    );
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(12),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).primaryColor.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(12),
-                                        ),
-                                        child: Icon(
-                                          activity['icon'],
-                                          size: 32,
-                                          color: Theme.of(context).primaryColor,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Text(
-                                        activity['title'],
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        activity['note'],
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.grey[600],
-                                        ),
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 8,
-                                          vertical: 4,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).primaryColor.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(8),
-                                        ),
-                                        child: Text(
-                                          activity['duration'],
-                                          style: TextStyle(
-                                            color: Theme.of(context).primaryColor,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          childCount: _recommendedActivities.length,
-                        ),
-                      ),
-                    ),
-
-                    // All Activities Section
                     SliverToBoxAdapter(
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
