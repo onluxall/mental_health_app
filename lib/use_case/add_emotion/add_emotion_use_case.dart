@@ -19,7 +19,6 @@ class AddEmotionUseCase implements IAddEmotionUseCase {
     yield BaseUseCaseResponse(isLoading: true);
     try {
       final userId = FirebaseAuth.instance.currentUser;
-      print(emotion.id);
       await _emotionRepo.setEmotions(emotion: emotion.copyWith(userId: userId?.uid), isUpdate: emotion.id != null);
     } catch (e) {
       yield BaseUseCaseResponse(isLoading: false, error: e);

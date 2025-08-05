@@ -27,7 +27,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     await emit.forEach(
       _taskInitUseCase.invoke(),
       onData: (data) {
-        print(data.error.toString());
         return state.copyWith(
           tasks: data.tasks,
           isLoading: data.isLoading,

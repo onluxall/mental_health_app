@@ -40,7 +40,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           user = result.user;
           todayJournalEntry = result.todayJournalEntry;
           todayEmotionData = result.todayEmotionData;
-          print(todayEmotionData);
         }
         error = result.error;
         isLoading = result.isLoading;

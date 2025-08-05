@@ -103,3 +103,99 @@ IconData getCategoryIcon(ActivityCategory category) {
       return Icons.fitness_center;
   }
 }
+
+class ActivityData {
+  final String title;
+  final ActivityCategory type;
+  final Color color;
+  final String time;
+
+  ActivityData({
+    required this.title,
+    required this.type,
+    required this.color,
+    required this.time,
+  });
+}
+
+final List<ActivityData> activities = [
+  // Mindfulness
+  ActivityData(
+    title: 'Meditation',
+    type: ActivityCategory.mindfulness,
+    color: getCategoryColor(ActivityCategory.mindfulness),
+    time: '10 min',
+  ),
+  ActivityData(
+    title: 'Journaling',
+    type: ActivityCategory.mindfulness,
+    color: getCategoryColor(ActivityCategory.mindfulness),
+    time: '15 min',
+  ),
+  ActivityData(
+    title: 'Breathing',
+    type: ActivityCategory.mindfulness,
+    color: getCategoryColor(ActivityCategory.mindfulness),
+    time: '5 min',
+  ),
+
+  // Creative
+  ActivityData(
+    title: 'Listen to Music',
+    type: ActivityCategory.creative,
+    color: getCategoryColor(ActivityCategory.creative),
+    time: '15 min',
+  ),
+  ActivityData(
+    title: 'Draw or Paint',
+    type: ActivityCategory.creative,
+    color: getCategoryColor(ActivityCategory.creative),
+    time: '30 min',
+  ),
+  ActivityData(
+    title: 'Creative Writing',
+    type: ActivityCategory.creative,
+    color: getCategoryColor(ActivityCategory.creative),
+    time: '20 min',
+  ),
+
+  // Active
+  ActivityData(
+    title: 'Exercise',
+    type: ActivityCategory.active,
+    color: getCategoryColor(ActivityCategory.active),
+    time: '30 min',
+  ),
+  ActivityData(
+    title: 'Go for a Walk',
+    type: ActivityCategory.active,
+    color: getCategoryColor(ActivityCategory.active),
+    time: '20 min',
+  ),
+  ActivityData(
+    title: 'Spend Time in Nature',
+    type: ActivityCategory.active,
+    color: getCategoryColor(ActivityCategory.active),
+    time: '40 min',
+  ),
+
+  // Social
+  ActivityData(
+    title: 'Call a Friend',
+    type: ActivityCategory.social,
+    color: getCategoryColor(ActivityCategory.social),
+    time: '15 min',
+  ),
+  ActivityData(
+    title: 'Therapy Session',
+    type: ActivityCategory.social,
+    color: getCategoryColor(ActivityCategory.social),
+    time: '50 min',
+  ),
+  ActivityData(
+    title: 'Volunteer',
+    type: ActivityCategory.social,
+    color: getCategoryColor(ActivityCategory.social),
+    time: '90 min',
+  ),
+];
