@@ -18,14 +18,8 @@ class ActivityRepo implements IActivityRepo {
 
   @override
   Future addActivity({required Activity activity}) {
-    return _activityDB.add(activity.toJson()).then((value) {}).catchError((error) {
-      throw Exception('Failed to add activity: $error');
+    return _activityDB.add(activity.toJson()).then((value) {
+      return _activityDB.doc(value.id).update({'id': value.id});
     });
-  }
-
-  @override
-  Future<Activity> getActivityById({required String id}) {
-    // TODO: implement getActivityById
-    throw UnimplementedError();
   }
 }

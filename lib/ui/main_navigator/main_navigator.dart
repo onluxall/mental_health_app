@@ -34,7 +34,7 @@ class MainNavigator extends StatelessWidget {
         }
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          body: _buildChildPage(index: state.currentIndex),
+          body: _buildChildPage(context: context, index: state.currentIndex),
           bottomNavigationBar: SafeArea(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -44,6 +44,7 @@ class MainNavigator extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 3),
                 child: GNav(
+                  selectedIndex: state.currentIndex,
                   gap: 8,
                   activeColor: Colors.black,
                   iconSize: 24,
@@ -90,10 +91,10 @@ class MainNavigator extends StatelessWidget {
     );
   }
 
-  Widget _buildChildPage({required int index}) {
+  Widget _buildChildPage({required BuildContext context, required int index}) {
     switch (index) {
       case 0:
-        return const HomeScreen();
+        return BlocProvider.value(value: BlocProvider.of<MainNavigatorCubit>(context), child: const HomeScreen());
       case 1:
         return const JournalScreen();
       case 2:

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ActivityDetailsSheet extends StatefulWidget {
   final String title;
@@ -7,6 +8,7 @@ class ActivityDetailsSheet extends StatefulWidget {
   final IconData icon;
   final Color color;
   final Function(String note, String duration) onSave;
+  final Function() goToChat;
 
   ActivityDetailsSheet({
     super.key,
@@ -16,6 +18,7 @@ class ActivityDetailsSheet extends StatefulWidget {
     required this.icon,
     required this.color,
     required this.onSave,
+    required this.goToChat,
   });
 
   @override
@@ -60,15 +63,11 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
       child: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.only(bottom: bottomPadding),
             child: Column(
               children: [
-                // Handle bar
                 Container(
                   margin: const EdgeInsets.symmetric(vertical: 8),
                   width: 40,
@@ -78,8 +77,6 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-
-                // Header
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
                   child: Row(
@@ -98,37 +95,47 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              widget.title,
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.title,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  _getDurationText(_selectedDuration),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: CupertinoColors.systemGrey.resolveFrom(context),
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _getDurationText(_selectedDuration),
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: CupertinoColors.systemGrey.resolveFrom(context),
-                              ),
-                            ),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  widget.goToChat();
+                                },
+                                icon: Icon(Icons.chat),
+                                color: widget.color,
+                                iconSize: 24),
                           ],
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 Container(
                   height: 1,
                   color: CupertinoColors.systemGrey5,
                 ),
-
-                // Duration Section
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Column(
@@ -210,13 +217,10 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
                     ],
                   ),
                 ),
-
                 Container(
                   height: 1,
                   color: CupertinoColors.systemGrey5,
                 ),
-
-                // Note Section
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Column(
@@ -251,9 +255,7 @@ class _ActivityDetailsSheetState extends State<ActivityDetailsSheet> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 16),
-
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: CupertinoButton.filled(

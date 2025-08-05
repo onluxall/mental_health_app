@@ -1,15 +1,15 @@
 part of 'task_bloc.dart';
 
 abstract class TaskEvent extends BaseEvent {
-  TaskEvent({bool? isLoading, dynamic error}) : super(isLoading: isLoading, error: error);
+  TaskEvent({super.isLoading, super.error});
 }
 
 class TaskEventInit extends TaskEvent {
-  TaskEventInit({bool? isLoading, dynamic error}) : super(isLoading: isLoading, error: error);
+  TaskEventInit({super.isLoading, super.error});
 }
 
 class TaskEventUpdate extends TaskEvent {
   final bool isCompleted;
   final String? taskId;
-  TaskEventUpdate({required this.isCompleted, required this.taskId, bool? isLoading, dynamic error}) : super(isLoading: isLoading, error: error);
+  TaskEventUpdate({required this.isCompleted, required this.taskId, super.isLoading, super.error});
 }

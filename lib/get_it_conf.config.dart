@@ -15,6 +15,8 @@ import 'package:injectable/injectable.dart' as _i526;
 
 import 'data/activity/interface.dart' as _i805;
 import 'data/activity/repo.dart' as _i999;
+import 'data/chat/interface.dart' as _i746;
+import 'data/chat/repo.dart' as _i561;
 import 'data/emotion/interface.dart' as _i756;
 import 'data/emotion/repo.dart' as _i634;
 import 'data/journal/interface.dart' as _i485;
@@ -32,6 +34,8 @@ import 'ui/journal/journal_entry_edit_bottom_sheet/edit_journal_entry_bloc.dart'
     as _i525;
 import 'ui/main_navigator/main_navigator_cubit.dart' as _i133;
 import 'ui/task/task_bloc/task_bloc.dart' as _i488;
+import 'ui/therapist_chat/therapist_chat_bloc/therapist_chat_bloc.dart'
+    as _i831;
 import 'use_case/add_activity/add_activity_use_case.dart' as _i914;
 import 'use_case/add_emotion/add_emotion_use_case.dart' as _i772;
 import 'use_case/add_journal_entry/add_journal_entry_use_case.dart' as _i811;
@@ -44,6 +48,9 @@ import 'use_case/observe_emotions/observe_emotions_use_case.dart' as _i699;
 import 'use_case/sign_up/sign_up_use_case.dart' as _i294;
 import 'use_case/task_init/task_init_use_case.dart' as _i503;
 import 'use_case/task_update/task_update_use_case.dart' as _i878;
+import 'use_case/therapist_chat_add/therapist_chat_add_use_case.dart' as _i226;
+import 'use_case/therapist_chat_init/therapist_chat_init_use_case.dart'
+    as _i636;
 
 // initializes the registration of main-scope dependencies inside of GetIt
 _i174.GetIt $initGetIt(
@@ -69,6 +76,7 @@ _i174.GetIt $initGetIt(
   gh.factory<_i294.ISignUpUseCase>(
       () => _i294.SignUpUseCase(gh<_i494.IUserRepo>()));
   gh.factory<_i805.IActivityRepo>(() => _i999.ActivityRepo());
+  gh.factory<_i746.IChatRepo>(() => _i561.ChatRepo());
   gh.factory<_i756.IEmotionRepo>(() => _i634.EmotionRepo());
   gh.factory<_i631.IHomeInitUseCase>(() => _i631.HomeInitUseCase(
         gh<_i494.IUserRepo>(),
@@ -90,10 +98,14 @@ _i174.GetIt $initGetIt(
         gh<_i0.ITaskRepo>(),
         gh<_i805.IActivityRepo>(),
       ));
+  gh.factory<_i636.ITherapistChatInitUseCase>(
+      () => _i636.TherapistChatInitUseCase(gh<_i746.IChatRepo>()));
   gh.factory<_i133.MainNavigatorCubit>(() => _i133.MainNavigatorCubit(
         gh<_i494.IUserRepo>(),
         gh<_i59.FirebaseAuth>(),
       ));
+  gh.factory<_i226.ITherapistChatAddUseCase>(
+      () => _i226.TherapistChatAddUseCase(gh<_i746.IChatRepo>()));
   gh.factory<_i878.ITaskUpdateUseCase>(
       () => _i878.TaskUpdateUseCase(gh<_i0.ITaskRepo>()));
   gh.factory<_i635.JournalBloc>(
@@ -113,6 +125,10 @@ _i174.GetIt $initGetIt(
       () => _i668.EmotionsSliderBloc(gh<_i772.IAddEmotionUseCase>()));
   gh.factory<_i525.EditJournalEntryBloc>(
       () => _i525.EditJournalEntryBloc(gh<_i267.IUpdateJournalEntryUseCase>()));
+  gh.factory<_i831.TherapistChatBloc>(() => _i831.TherapistChatBloc(
+        gh<_i636.ITherapistChatInitUseCase>(),
+        gh<_i226.ITherapistChatAddUseCase>(),
+      ));
   gh.factory<_i56.HomeBloc>(() => _i56.HomeBloc(
         gh<_i631.IHomeInitUseCase>(),
         gh<_i914.IAddActivityUseCase>(),

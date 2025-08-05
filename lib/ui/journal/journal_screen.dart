@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mental_health_app/extensions/date_time_extension.dart';
@@ -25,10 +26,41 @@ class JournalScreen extends StatelessWidget {
               state.userJournalEntries.where((entry) => state.chosenDate != null && state.chosenDate!.isSameDayAsTimestamp(entry.date)).toList();
           return Column(
             children: [
-              TableCalendar(
-                eventLoader: (state.userJournalEntries.isNotEmpty || state.userTasks.isNotEmpty
+              TableCalendar<CalendarEntry>(
+                eventLoader: (state.userJournalEntries.isNotEmpty || state.userTasks.isNotEmpty || state.activities.isNotEmpty
                     ? (day) {
-                        return state.userJournalEntries.where((entry) => day.isSameDayAsTimestamp(entry.date)).toList();
+                        List<CalendarEntry> allEntries = [];
+                        state.userJournalEntries.forEach((journalEntry) {
+                          if (day.isSameDayAsTimestamp(journalEntry.date)) {
+                            allEntries.add(CalendarEntry(
+                                id: journalEntry.id ?? "",
+                                type: CalendarEntryType.journalEntry,
+                                title: journalEntry.title,
+                                content: journalEntry.content,
+                                date: journalEntry.date));
+                          }
+                        });
+                        state.activities.forEach((activity) {
+                          if (day.isSameDayAsTimestamp(activity.createdAt)) {
+                            allEntries.add(
+                              CalendarEntry(
+                                  id: activity.id ?? "",
+                                  type: CalendarEntryType.activity,
+                                  title: activity.title,
+                                  content: activity.duration,
+                                  date: activity.createdAt),
+                            );
+                          }
+                        });
+                        state.userTasks.forEach((task) {
+                          if (day.isSameDayAsTimestamp(task.date)) {
+                            allEntries.add(
+                              CalendarEntry(
+                                  id: task.id ?? "", type: CalendarEntryType.task, title: task.title, content: task.duration.toString(), date: task.date),
+                            );
+                          }
+                        });
+                        return allEntries;
                       }
                     : null),
                 firstDay: DateTime.now().subtract(const Duration(days: 365)),
@@ -69,11 +101,12 @@ class JournalScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Visibility(
-                            visible: dailyEntries.isNotEmpty,
-                            child: const Text(
-                              "Note",
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                            )),
+                          visible: dailyEntries.isNotEmpty,
+                          child: const Text(
+                            "Note",
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                         ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -136,3 +169,15 @@ class JournalScreen extends StatelessWidget {
     );
   }
 }
+
+class CalendarEntry {
+  final String id;
+  final CalendarEntryType type;
+  final String title;
+  final String content;
+  final Timestamp date;
+
+  CalendarEntry({required this.id, required this.type, required this.title, required this.content, required this.date});
+}
+
+enum CalendarEntryType { activity, task, journalEntry }

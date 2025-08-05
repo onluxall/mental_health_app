@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mental_health_app/ui/home/emotions_slider/emotions_slider_widget.dart';
+import 'package:mental_health_app/ui/main_navigator/main_navigator_cubit.dart';
 
 import '../../data/activity/data.dart';
 import '../../get_it_conf.dart';
@@ -52,6 +53,7 @@ void _showActivityDetails(
   required IconData icon,
   required Color color,
   required Function(String note, String duration) onSave,
+  required Function() goToChat,
 }) {
   showModalBottomSheet(
     context: context,
@@ -62,6 +64,7 @@ void _showActivityDetails(
       icon: icon,
       color: color,
       onSave: onSave,
+      goToChat: goToChat,
     ),
   );
 }
@@ -71,6 +74,7 @@ Widget _buildActivityCard(
   required IconData icon,
   required String title,
   required Color color,
+  required Function() goToChat,
 }) {
   return Container(
     decoration: BoxDecoration(
@@ -105,6 +109,7 @@ Widget _buildActivityCard(
                     ),
                   );
             },
+            goToChat: goToChat,
           );
         },
         child: Column(
@@ -153,7 +158,7 @@ class HomeScreen extends StatelessWidget {
     return BlocProvider<HomeBloc>(
       create: (context) => getIt.get<HomeBloc>()..add(HomeEventInit()),
       child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) {
+        builder: (blocContext, state) {
           if (state.isLoading) {
             return const Scaffold(body: Center(child: CircularProgressIndicator()));
           }
@@ -164,11 +169,12 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   FocusScope.of(context).unfocus();
                 },
-                child: CustomScrollView(
-                  slivers: [
-                    // Greeting, quote, and mood slider
-                    SliverToBoxAdapter(
-                      child: Padding(
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
                         padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,117 +226,40 @@ class HomeScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                    ),
-
-                    SliverToBoxAdapter(
-                      child: Padding(
+                      Padding(
                         padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'All Activities',
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                // TODO: Navigate to all activities
-                              },
-                              child: const Text('See All'),
-                            ),
-                          ],
+                        child: Text(
+                          'All Activities',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      sliver: SliverGrid(
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          childAspectRatio: 1.0,
+                      Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: GridView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            childAspectRatio: 1.0,
+                          ),
+                          children: activities
+                              .map(
+                                (activity) => _buildActivityCard(context,
+                                    icon: getCategoryIcon(activity.type),
+                                    title: activity.title,
+                                    color: activity.color,
+                                    goToChat: () => context.read<MainNavigatorCubit>().changePage(2)),
+                              )
+                              .toList(),
                         ),
-                        delegate: SliverChildListDelegate([
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.favorite,
-                            title: 'Meditation',
-                            color: getCategoryColor(ActivityCategory.mindfulness),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.book,
-                            title: 'Journaling',
-                            color: getCategoryColor(ActivityCategory.mindfulness),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.air,
-                            title: 'Breathing',
-                            color: getCategoryColor(ActivityCategory.mindfulness),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.music_note,
-                            title: 'Music',
-                            color: getCategoryColor(ActivityCategory.creative),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.sports_basketball,
-                            title: 'Exercise',
-                            color: getCategoryColor(ActivityCategory.active),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.nightlight_round,
-                            title: 'Sleep',
-                            color: getCategoryColor(ActivityCategory.mindfulness),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.people,
-                            title: 'Social',
-                            color: getCategoryColor(ActivityCategory.social),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.brush,
-                            title: 'Art',
-                            color: getCategoryColor(ActivityCategory.creative),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.wb_sunny,
-                            title: 'Nature',
-                            color: getCategoryColor(ActivityCategory.active),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.chat,
-                            title: 'Therapy',
-                            color: getCategoryColor(ActivityCategory.social),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.sports_esports,
-                            title: 'Games',
-                            color: getCategoryColor(ActivityCategory.active),
-                          ),
-                          _buildActivityCard(
-                            context,
-                            icon: Icons.favorite_border,
-                            title: 'Self Care',
-                            color: getCategoryColor(ActivityCategory.mindfulness),
-                          ),
-                        ]),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

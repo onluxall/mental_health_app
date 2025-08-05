@@ -21,7 +21,6 @@ class EmotionRepo extends IEmotionRepo {
 
   @override
   Future setEmotions({required EmotionData emotion, bool isUpdate = false}) {
-    print(isUpdate);
     if (isUpdate) {
       return _db.doc(emotion.id).update({
         'emotionLevel': emotion.emotionLevel.name,
